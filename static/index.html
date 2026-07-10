@@ -7,18 +7,81 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <header class="chat-header">
-            <h3>AI Assistant Engine</h3>
-        </header>
-        <div class="chat-box" id="chatBox">
-            <div class="message assistant">Hello! I am ready. How can I help you today?</div>
+
+<div class="app-layout">
+    
+    <!-- 1. Left Sidebar (Model Settings Control Panel) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">Model Settings</div>
+        <div class="sidebar-content">
+            
+            <div class="setting-group">
+                <label for="systemPrompt">System Prompt</label>
+                <textarea id="systemPrompt" rows="4">You are a helpful assistant.</textarea>
+            </div>
+
+            <div class="setting-group">
+                <div class="label-row">
+                    <label for="temperature">Temperature</label>
+                    <span id="tempValue" class="value-badge">0.7</span>
+                </div>
+                <input id="temperature" type="range" min="0" max="2" step="0.1" value="0.7">
+            </div>
+
+            <div class="setting-group">
+                <div class="label-row">
+                    <label for="topP">Top P</label>
+                    <span id="topPValue" class="value-badge">1.0</span>
+                </div>
+                <input id="topP" type="range" min="0" max="1" step="0.05" value="1">
+            </div>
+
+            <div class="setting-group">
+                <div class="label-row">
+                    <label for="maxTokens">Max Tokens</label>
+                    <span id="tokensValue" class="value-badge">300</span>
+                </div>
+                <input id="maxTokens" type="range" min="100" max="2048" step="100" value="300">
+            </div>
+
         </div>
+    </aside>
+
+    <!-- 2. Main Chat Engine Area -->
+    <main class="chat-container">
+        
+        <!-- Header with Title on Left, Auth0 controls on the Top-Right -->
+        <header class="chat-header">
+            <span class="bot-title">AI Assistant Engine</span>
+            
+            <!-- Auth0 Login/Profile Dynamic Container -->
+            <div id="auth-widget" class="auth-flex">
+                <p id="userName" class="user-greeting"></p>
+                <button id="loginBtn" class="auth-btn">Log In</button>
+                <button id="logoutBtn" class="auth-btn hidden">Log Out</button>
+            </div>
+        </header>
+
+        <!-- Message Box (Handles automatic scroll/text overflow cleanly) -->
+        <div class="chat-box" id="chatBox">
+            <div class="message assistant">
+                Hello! How can I help you today?
+            </div>
+        </div>
+
+        <!-- Bottom Text Input Bar -->
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="Type your prompt here..." autocomplete="off">
+            <input id="userInput" type="text" placeholder="Ask anything...">
             <button id="sendBtn">Send</button>
         </div>
-    </div>
-    <script src="app.js"></script>
+
+    </main>
+
+</div>
+
+<!-- Auth0 SDK & App Business Logic Dependencies -->
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+<script src="app.js"></script>
+
 </body>
 </html>
