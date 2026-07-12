@@ -1,4 +1,5 @@
 import os
+from urllib import response
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
@@ -80,3 +81,31 @@ class DatabaseService:
      print("Created:", created.data)
 
      return created.data[0]
+    
+    def create_chat_session(self, user_id: int, title: str = "New Chat"):
+     response = (
+        self.client
+        .table("chat_sessions")
+        .insert({
+            "user_id": user_id,
+            "title": title
+        })
+        .execute()
+    )
+
+     return response.data[0]
+
+
+    def save_message(self, session_id: int, role: str, content: str):
+     response = (
+        self.client
+        .table("messages")
+        .insert({
+            "session_id": session_id,
+            "role": role,
+            "content": content
+        })
+        .execute()
+    )
+
+     return response.data[0]
