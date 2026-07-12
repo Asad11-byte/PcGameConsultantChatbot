@@ -4,7 +4,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.schemas.chat import ChatRequest
-from app.services.groq_service import GroqService  # Updated Import
+from app.services.groq_service import GroqService
+from app.services.database_service import DatabaseService
+
 
 app = FastAPI(title="Clean Architecture Groq AI Pipeline")
 
@@ -16,19 +18,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Groq Service
 ai_service = GroqService()
+db_service = DatabaseService()
+
+
+
+@app.get("/api/test-db")
+def test_db():
+    return db_service.test_connection()
+
 
 @app.post("/api/chat")
 async def chat_endpoint(payload: ChatRequest):
-    """
-    Validates payload using Pydantic, passes the message to the Groq service,
-    and returns a live token stream directly to the JavaScript frontend.
-    """
-    user_prompt = payload.message
-    
+
+    # Create user in Supabase (or return existing user)
+    db_user = db_service.get_or_create_user(payload.user.model_dump())
+
+    print("\n========== DATABASE USER ==========")
+    print(db_user)
+    print("===================================\n")
+
     return StreamingResponse(
-        ai_service.get_chat_stream(user_prompt), 
+        ai_service.get_chat_stream(payload.message),
         media_type="text/plain"
     )
 

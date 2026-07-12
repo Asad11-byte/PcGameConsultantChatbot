@@ -132,40 +132,32 @@ document.getElementById("maxTokens").addEventListener("input", e => {
     document.getElementById("tokensValue").textContent = e.target.value;
 
 });
-
 // ================================
-// Chat Events
-// ================================
-
-document.getElementById("sendBtn").addEventListener("click", sendMessage);
-
-document.getElementById("userInput").addEventListener("keypress", e => {
-
-    if (e.key === "Enter") {
-
-        sendMessage();
-
-    }
-
-});
-
-// ================================
-// Send Chat Message
+// Send Chat Message is above
 // ================================
 
 async function sendMessage() {
 
     const input = document.getElementById("userInput");
-
     const text = input.value.trim();
 
     if (!text) return;
 
     appendMessage(text, "user");
-
     input.value = "";
 
     const assistant = appendMessage("", "assistant");
+
+    // User must be logged in
+    if (!auth0Client || !(await auth0Client.isAuthenticated())) {
+        assistant.textContent = "❌ Please log in first.";
+        return;
+    }
+
+    // Get logged-in Auth0 user
+    const user = await auth0Client.getUser();
+
+    console.log("User:", user);
 
     try {
 
@@ -174,22 +166,19 @@ async function sendMessage() {
             method: "POST",
 
             headers: {
-
                 "Content-Type": "application/json"
-
             },
 
             body: JSON.stringify({
 
                 message: text,
 
-                system_prompt: document.getElementById("systemPrompt").value,
-
-                temperature: parseFloat(document.getElementById("temperature").value),
-
-                top_p: parseFloat(document.getElementById("topP").value),
-
-                max_tokens: parseInt(document.getElementById("maxTokens").value)
+                user: {
+                    sub: user.sub,
+                    email: user.email,
+                    name: user.name,
+                    picture: user.picture
+                }
 
             })
 
@@ -197,7 +186,9 @@ async function sendMessage() {
 
         if (!response.ok) {
 
-            throw new Error(`HTTP ${response.status}`);
+            const error = await response.text();
+
+            throw new Error(error);
 
         }
 
@@ -215,17 +206,34 @@ async function sendMessage() {
 
             document.getElementById("chatBox").scrollTop =
                 document.getElementById("chatBox").scrollHeight;
+
         }
 
     } catch (err) {
 
-        assistant.textContent = "❌ " + err.message;
-
         console.error(err);
+
+        assistant.textContent = "❌ " + err.message;
 
     }
 
 }
+
+
+// ================================
+// Chat Events
+// ================================
+
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+document.getElementById("userInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
+
+
+
 
 // ================================
 // Append Message
@@ -249,6 +257,7 @@ function appendMessage(text, sender) {
 
 }
 
+
 // ================================
 // Start Application
 // ================================
@@ -259,6 +268,15 @@ window.addEventListener("load", () => {
 
     console.log("Auth0 SDK:", typeof createAuth0Client);
 
-    initAuth();
+    // Authorization parameters for Auth0 initialization
+    initAuth({
+        authorizationParams: {
+            redirect_uri: window.location.origin,
+            audience: "https://pc-game-consultant-api"
+        }
+    });
+
+
+
 
 });

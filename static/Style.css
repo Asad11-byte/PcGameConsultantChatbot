@@ -236,7 +236,7 @@ input[type="text"]:focus {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-#btn-send {
+#sendBtn {
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
