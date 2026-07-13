@@ -1,54 +1,82 @@
 # 🎮 PC Game Consultant Chatbot
 
-An AI-powered chatbot designed to assist gamers in diagnosing PC hardware issues, recommending gaming components, optimizing system performance, and answering PC gaming-related questions in real time.
+An AI-powered **PC Game Consultant Chatbot** that helps gamers build gaming PCs, troubleshoot hardware issues, diagnose performance bottlenecks, optimize FPS, and receive intelligent hardware recommendations.
 
-Built with **FastAPI**, **Groq Cloud API**, **Vanilla HTML/CSS/JavaScript**, and **Auth0 Authentication**, the application follows the **Clean Architecture** design pattern to ensure scalability, maintainability, and separation of concerns.
-
----
-
-# 📸 Features
-
-- 🤖 AI-powered PC gaming consultant
-- ⚡ Real-time streaming responses using Groq API
-- 🔐 User authentication with Auth0
-- 🎛 Adjustable AI inference parameters
-  - System Prompt
-  - Temperature
-  - Top-P
-  - Maximum Tokens
-- 🧠 Clean Architecture backend
-- 📡 FastAPI REST API
-- 🎨 Modern responsive dashboard
-- 🔄 Streaming token rendering without page refresh
-- 🛡 Request validation using Pydantic
+The application is built using **FastAPI**, **Groq Llama 3.3 70B**, **Supabase**, **Auth0**, and a responsive frontend developed with **Vanilla HTML, CSS, and JavaScript**.
 
 ---
 
-# 🏗 Project Architecture
+# 🚀 Features
 
-The project follows the **Clean Architecture** approach, separating the application into independent layers.
+- 🤖 AI-powered gaming hardware assistant
+- 💬 Real-time streaming AI responses
+- 🔐 Secure authentication with Auth0
+- 👤 Automatic user creation
+- 💾 Persistent chat history using Supabase
+- 📝 Multiple chat sessions
+- 🖥️ Gaming PC build recommendations
+- 🎮 FPS optimization guidance
+- 🔧 Hardware troubleshooting
+- 🌡️ Thermal and performance diagnostics
+- 📱 Responsive UI for desktop and mobile
+
+---
+
+# 🛠️ Tech Stack
+
+## Backend
+
+- FastAPI
+- Python
+- Groq API
+- Llama 3.3 70B Versatile
+- Supabase
+- Auth0
+- Uvicorn
+
+## Frontend
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+
+## Database
+
+Supabase PostgreSQL
+
+---
+
+# 🏗️ Project Architecture
 
 ```
-                  Frontend (HTML/CSS/JavaScript)
-                               │
-                               │ JSON Request
-                               ▼
-                     FastAPI Routing Layer
-                               │
-                     Pydantic Validation
-                               │
-                               ▼
-                     Business Service Layer
-                               │
-                        Groq API Client
-                               │
-                               ▼
-                        Groq Cloud Models
-                               │
-                    Streaming AI Response
-                               │
-                               ▼
-                         Browser Interface
+                           ┌─────────────────────┐
+                           │     Web Browser     │
+                           │ HTML • CSS • JS     │
+                           └──────────┬──────────┘
+                                      │
+                                      │ HTTP
+                                      │
+                           ┌──────────▼──────────┐
+                           │      FastAPI        │
+                           │    REST Endpoints   │
+                           └──────────┬──────────┘
+                                      │
+             ┌────────────────────────┼────────────────────────┐
+             │                        │                        │
+             │                        │                        │
+     ┌───────▼────────┐      ┌────────▼────────┐      ┌────────▼────────┐
+     │ Authentication │      │  Groq Service   │      │ Database Service│
+     │     Auth0      │      │ Llama 3.3 70B   │      │    Supabase     │
+     └────────────────┘      └─────────────────┘      └─────────────────┘
+                                                               │
+                                                               │
+                                               ┌───────────────▼──────────────┐
+                                               │         PostgreSQL           │
+                                               │                              │
+                                               │ • Users                      │
+                                               │ • Chat Sessions              │
+                                               │ • Messages                   │
+                                               └──────────────────────────────┘
 ```
 
 ---
@@ -56,83 +84,58 @@ The project follows the **Clean Architecture** approach, separating the applicat
 # 📂 Project Structure
 
 ```
-PC-Game-Consultant-Chatbot
+PC-Game-Consultant/
 │
-├── app
-│   ├── main.py
-│   ├── schemas
-│   │     └── chat.py
-│   ├── services
-│   │     └── groq_service.py
-│   └── __init__.py
+├── app/
+│   │
+│   ├── schemas/
+│   │   └── chat.py
+│   │
+│   ├── services/
+│   │   ├── database_service.py
+│   │   └── groq_service.py
+│   │
+│   └── main.py
 │
-├── static
+├── static/
+│   │
 │   ├── index.html
+│   ├── app.js
 │   ├── style.css
-│   └── app.js
+│   ├── sidebar.css
+│   ├── landingpage.css
+│   └── responsive.css
 │
-├── .env
 ├── requirements.txt
-├── README.md
-└── .gitignore
+├── .env
+└── README.md
 ```
 
 ---
 
-# 🛠 Technologies Used
+# ⚙️ Installation
 
-### Backend
-
-- FastAPI
-- Uvicorn
-- Groq Python SDK
-- Pydantic
-- Python Dotenv
-
-### Frontend
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-
-### Authentication
-
-- Auth0 SPA SDK
-
-### AI
-
-- Groq Cloud API
-- Llama 3.1 8B Instant
-
----
-
-# ⚙ Installation
-
-## 1 Clone Repository
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/PC-Game-Consultant-Chatbot.git
+git clone https://github.com/yourusername/pc-game-consultant.git
 
-cd PC-Game-Consultant-Chatbot
+cd pc-game-consultant
 ```
 
 ---
 
-## 2 Create Virtual Environment
+## 2. Create Virtual Environment
 
-Windows
+### Windows
 
 ```bash
 python -m venv venv
-```
 
-Activate
-
-```bash
 venv\Scripts\activate
 ```
 
-Linux / macOS
+### Linux / macOS
 
 ```bash
 python3 -m venv venv
@@ -142,7 +145,7 @@ source venv/bin/activate
 
 ---
 
-## 3 Install Dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -150,23 +153,29 @@ pip install -r requirements.txt
 
 ---
 
-## 4 Create Environment File
+## 4. Configure Environment Variables
 
 Create a `.env` file.
 
 ```env
 GROQ_API_KEY=your_groq_api_key
+
+SUPABASE_URL=your_supabase_url
+
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
+
+Configure Auth0 credentials in **app.js**.
 
 ---
 
-## 5 Run Application
+## 5. Run the Project
 
 ```bash
-python -m uvicorn app.main:app --reload
+uvicorn app.main:app --reload
 ```
 
-Open
+Visit
 
 ```
 http://127.0.0.1:8000
@@ -174,99 +183,179 @@ http://127.0.0.1:8000
 
 ---
 
-# 🔐 Auth0 Configuration
-
-Create an application in Auth0.
-
-Choose
+# 🔑 Authentication Flow
 
 ```
-Single Page Application (SPA)
-```
-
-Configure
-
-```
-Allowed Callback URLs
-http://127.0.0.1:8000
-
-Allowed Logout URLs
-http://127.0.0.1:8000
-
-Allowed Web Origins
-http://127.0.0.1:8000
-
-Allowed Origins (CORS)
-http://127.0.0.1:8000
-```
-
-Update the following values inside `static/app.js`
-
-```javascript
-domain: "YOUR_AUTH0_DOMAIN",
-
-clientId: "YOUR_CLIENT_ID"
+User
+   │
+   ▼
+Auth0 Login
+   │
+   ▼
+Authenticated User
+   │
+   ▼
+FastAPI
+   │
+   ▼
+Create/Get User
+   │
+   ▼
+Supabase
 ```
 
 ---
 
-# 🎛 AI Model Controls
-
-The application allows users to customize model inference through the control panel.
-
-| Parameter | Description |
-|-----------|-------------|
-| System Prompt | Defines assistant behavior |
-| Temperature | Controls randomness |
-| Top-P | Controls token sampling probability |
-| Max Tokens | Maximum generated response length |
-
----
-
-# 💬 Example Questions
-
-- Recommend a gaming PC under $1000.
-- Is my RTX 3060 suitable for 1440p gaming?
-- My CPU reaches 95°C while gaming. What should I do?
-- Should I upgrade my RAM or GPU first?
-- Why am I experiencing FPS drops?
-- Recommend components for a streaming PC.
-
----
-
-# 🔄 API Endpoint
-
-### POST
+# 💬 Chat Flow
 
 ```
-/chat
-```
-
-Example Request
-
-```json
-{
-    "message":"Build me a gaming PC",
-    "system_prompt":"You are an expert PC consultant.",
-    "temperature":0.7,
-    "top_p":1,
-    "max_tokens":300
-}
+User Message
+      │
+      ▼
+FastAPI Endpoint
+      │
+      ▼
+Get/Create User
+      │
+      ▼
+Create Chat Session
+      │
+      ▼
+Save User Message
+      │
+      ▼
+Groq LLM
+      │
+      ▼
+Stream Response
+      │
+      ▼
+Save Assistant Response
+      │
+      ▼
+Return Response to Browser
 ```
 
 ---
 
-# 📈 Future Improvements
+# 🗄️ Database Schema
 
-- Conversation history
-- Persistent user profiles
-- GPU benchmark database integration
-- PCPartPicker integration
-- Retrieval-Augmented Generation (RAG)
-- Admin analytics dashboard
+## users
+
+| Column |
+|---------|
+| id |
+| auth0_id |
+| name |
+| email |
+| picture |
+
+---
+
+## chat_sessions
+
+| Column |
+|---------|
+| id |
+| user_id |
+| title |
+| created_at |
+
+---
+
+## messages
+
+| Column |
+|---------|
+| id |
+| session_id |
+| role |
+| content |
+| created_at |
+
+---
+
+# 📡 API Endpoints
+
+## Test Database
+
+```
+GET /api/test-db
+```
+
+---
+
+## Create Chat
+
+```
+POST /api/chat/new
+```
+
+---
+
+## Send Message
+
+```
+POST /api/chat
+```
+
+Streams AI responses while storing messages in Supabase.
+
+---
+
+# 💡 Example Prompts
+
+- Build me a gaming PC under $1000.
+- Recommend the best GPU for 1440p gaming.
+- Why is my FPS dropping in Valorant?
+- Is my Ryzen 5 5600 bottlenecking an RTX 4070?
+- My PC shuts down while gaming.
+- Suggest the best gaming monitor under $300.
+- Compare RTX 5070 vs RX 9070 XT.
+
+---
+
+# ✨ Future Improvements
+
+- Chat history sidebar
+- Rename chats
+- Delete chats
+- Search previous conversations
+- Markdown rendering
+- Syntax highlighting
+- Image upload
+- Hardware compatibility checker
+- Gaming benchmark database
+- User profile page
 - Dark/Light mode
-- Docker deployment
-- Unit and integration tests
+- Export conversations
+
+---
+
+# 📸 Screenshots
+
+Add screenshots of:
+
+- Landing Page
+- Login Screen
+- Chat Interface
+- Sidebar
+- Mobile View
+
+---
+
+# 📦 Requirements
+
+```
+fastapi
+uvicorn[standard]
+groq
+supabase
+python-dotenv
+python-multipart
+pydantic
+httpx
+```
 
 ---
 
@@ -274,7 +363,15 @@ Example Request
 
 **Asad Ali**
 
-AI & Backend Developer
+GitHub: https://github.com/your-github
+
+LinkedIn: https://linkedin.com/in/your-linkedin
+
+---
+
+# ⭐ If you found this project useful
+
+Give the repository a ⭐ on GitHub!
 
 ---
 
