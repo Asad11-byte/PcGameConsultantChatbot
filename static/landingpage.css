@@ -1,0 +1,270 @@
+
+/* ===========================
+   Landing Navigation
+=========================== */
+
+.landing-navbar{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 40px;
+
+    background:transparent;
+
+    position:relative;
+
+    z-index:10;
+}
+
+.landing-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.landing-logo-icon{
+    font-size:30px;
+}
+
+.landing-brand-text{
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+}
+
+.landing-auth{
+    display:flex;
+    gap:14px;
+}
+
+.landing-login-btn,
+.landing-signup-btn{
+
+    padding:10px 22px;
+
+    border-radius:12px;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.landing-login-btn{
+
+    background:transparent;
+
+    color:white;
+
+    border:1px solid #3b82f6;
+
+}
+
+.landing-login-btn:hover{
+
+    background:#2563eb;
+
+}
+
+.landing-signup-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.landing-signup-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* ===========================
+   Landing Page
+=========================== */
+.landing-page{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-bottom:80px;
+
+    -webkit-overflow-scrolling:touch;
+}
+
+.landing-content{
+
+    width:100%;
+    max-width:1200px;
+
+    margin:auto;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:60px 24px 100px;
+
+    flex:1;
+}
+.landing-logo {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 34px;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, .35);
+}
+
+.landing-content h1 {
+    font-size: 42px;
+    color: #ffffff;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+.landing-subtitle {
+    max-width: 700px;
+    margin: 0 auto 48px;
+    color: #94a3b8;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+/* ===========================
+   Feature Cards
+=========================== */
+
+.feature-grid{
+
+    width:100%;
+
+    max-width:950px;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:22px;
+
+    margin:40px 0;
+
+}
+
+.feature-card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    transition: .25s;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: #3b82f6;
+}
+
+.feature-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.feature-card p {
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+/* ===========================
+   Prompt Buttons
+=========================== */
+
+.example-prompts{
+
+    width:100%;
+
+    max-width:950px;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:20px;
+
+    margin-bottom:40px;
+
+}
+
+.prompt-card {
+    background: #111827;
+    color: white;
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: .25s;
+    text-align: left;
+    font-size: 15px;
+}
+
+.prompt-card:hover {
+    border-color: #3b82f6;
+    background: #1e293b;
+}
+
+/* ===========================
+   Utilities
+=========================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 768px) {
+
+    .landing-content h1 {
+        font-size: 30px;
+    }
+
+    .feature-grid,
+    .example-prompts {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-page {
+        padding: 25px;
+    }
+
+}

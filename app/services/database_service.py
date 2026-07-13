@@ -109,3 +109,25 @@ class DatabaseService:
     )
 
      return response.data[0]
+    def get_chat_session(self, session_id: str):
+     response = (
+        self.client
+        .table("chat_sessions")
+        .select("*")
+        .eq("id", session_id)
+        .single()
+        .execute()
+    )
+
+     return response.data
+    def get_messages(self, session_id: str):
+     response = (
+        self.client
+        .table("messages")
+        .select("role, content")
+        .eq("session_id", session_id)
+        .order("created_at")
+        .execute()
+    )
+
+     return response.data

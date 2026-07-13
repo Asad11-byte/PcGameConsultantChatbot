@@ -30,3 +30,6 @@ class ChatRequest(BaseModel):
     )
 
     user: UserInfo
+
+    session_id: Optional[str] = None
+    

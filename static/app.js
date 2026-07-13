@@ -1,7 +1,7 @@
 // ================================
 // Auth0 Configuration
 // ================================
-
+let currentSessionId = null;
 let auth0Client = null;
 
 async function initAuth() {
@@ -39,7 +39,7 @@ async function initAuth() {
     }
 }
 const scrollToBottom = () => {
-    const chatBox = document.getElementById("chat-box");
+    const chatBox = document.getElementById("chatBox");
     chatBox.scrollTop = chatBox.scrollHeight;
 };
 
@@ -64,8 +64,24 @@ async function updateUI() {
 
         loginBtn.style.display = "none";
         logoutBtn.style.display = "block";
+        // Switch from landing page to chat dashboard
+        document.getElementById("landingScreen").classList.add("hidden");
+        document.getElementById("chatScreen").classList.remove("hidden");
 
-        console.log("Logged in:", user);
+        // Show chat messages area
+        document.getElementById("chatBox").classList.remove("hidden");
+
+        const pendingPrompt = localStorage.getItem("pendingPrompt");
+
+        if (pendingPrompt) {
+
+            document.getElementById("userInput").value = pendingPrompt;
+
+            localStorage.removeItem("pendingPrompt");
+
+            sendMessage();
+
+        }
 
     } else {
 
@@ -73,12 +89,13 @@ async function updateUI() {
 
         loginBtn.style.display = "block";
         logoutBtn.style.display = "none";
-
-        console.log("User not logged in");
+        // Show landing page
+        document.getElementById("landingScreen").classList.remove("hidden");
+        document.getElementById("chatScreen").classList.add("hidden");
 
     }
-}
 
+}
 // ================================
 // Login Button
 // ================================
@@ -88,6 +105,32 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
     if (!auth0Client) return;
 
     await auth0Client.loginWithRedirect();
+
+});
+document.getElementById("landingLoginBtn").addEventListener("click", async () => {
+
+    if (!auth0Client) return;
+
+    await auth0Client.loginWithRedirect();
+
+});
+// ================================
+// Landing Page Signup Button
+// ================================
+
+document.getElementById("landingSignupBtn").addEventListener("click", async () => {
+
+    if (!auth0Client) return;
+
+    await auth0Client.loginWithRedirect({
+
+        authorizationParams: {
+
+            screen_hint: "signup"
+
+        }
+
+    });
 
 });
 
@@ -112,28 +155,7 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 });
 
 // ================================
-// Slider Updates
-// ================================
-
-document.getElementById("temperature").addEventListener("input", e => {
-
-    document.getElementById("tempValue").textContent = e.target.value;
-
-});
-
-document.getElementById("topP").addEventListener("input", e => {
-
-    document.getElementById("topPValue").textContent = e.target.value;
-
-});
-
-document.getElementById("maxTokens").addEventListener("input", e => {
-
-    document.getElementById("tokensValue").textContent = e.target.value;
-
-});
-// ================================
-// Send Chat Message is above
+// Send Chat Message 
 // ================================
 
 async function sendMessage() {
@@ -142,6 +164,7 @@ async function sendMessage() {
     const text = input.value.trim();
 
     if (!text) return;
+
 
     appendMessage(text, "user");
     input.value = "";
@@ -276,7 +299,37 @@ window.addEventListener("load", () => {
         }
     });
 
+    document.querySelectorAll(".prompt-card").forEach(card => {
+
+    card.addEventListener("click", async () => {
+
+        const prompt = card.textContent.trim();
+
+        if (await auth0Client.isAuthenticated()) {
+
+            document.getElementById("userInput").value = prompt;
+
+            sendMessage();
+
+        } else {
+
+            localStorage.setItem("pendingPrompt", prompt);
+
+            await auth0Client.loginWithRedirect();
+
+        }
+
+    });
+
+});
 
 
+    document.getElementById("newChatBtn").addEventListener("click", () => {
+
+        showLandingPage();
+
+        document.getElementById("userInput").focus();
+
+    });
 
 });

@@ -3,84 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot Platform</title>
+    <title>PC Game AI Assistant</title>
+
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="landingpage.css">
+    <link rel="stylesheet" href="responsive.css">
 </head>
+
 <body>
 
-<div class="app-layout">
-    
-    <!-- 1. Left Sidebar (Model Settings Control Panel) -->
+<!-- =========================
+     Landing Screen
+========================= -->
+
+<div id="landingScreen">
+
+    <!-- Landing Navigation -->
+<nav class="landing-navbar">
+
+    <div class="landing-brand">
+
+        <span class="landing-logo-icon">🎮</span>
+
+        <span class="landing-brand-text">
+            PC Game AI Assistant
+        </span>
+
+    </div>
+
+    <div class="landing-auth">
+
+        <button id="landingLoginBtn" class="landing-login-btn">
+            Log In
+        </button>
+
+        <button id="landingSignupBtn" class="landing-signup-btn">
+            Sign Up
+        </button>
+
+    </div>
+
+</nav>
+
+    <section id="landingPage" class="landing-page">
+
+            <div class="landing-content">
+
+                <div class="landing-logo">
+                    🎮
+                </div>
+
+                <h1>
+                    PC Game AI Assistant
+                </h1>
+
+                <p class="landing-subtitle">
+                    Your AI-powered gaming companion for building custom PCs,
+                    diagnosing hardware issues, improving FPS,
+                    comparing components and helping you make smarter
+                    gaming decisions.
+                </p>
+
+                <!-- Features -->
+
+                <div class="feature-grid">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🖥️
+                        </div>
+
+                        <h3>
+                            Build Gaming PCs
+                        </h3>
+
+                        <p>
+                            Create balanced gaming PC builds for every budget.
+                        </p>
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            FPS Optimization
+                        </h3>
+
+                        <p>
+                            Improve game performance and eliminate bottlenecks.
+                        </p>
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🔧
+                        </div>
+
+                        <h3>
+                            Hardware Diagnosis
+                        </h3>
+
+                        <p>
+                            Troubleshoot overheating, crashes and compatibility issues.
+                        </p>
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🎯
+                        </div>
+
+                        <h3>
+                            Component Recommendations
+                        </h3>
+
+                        <p>
+                            Compare CPUs, GPUs, RAM, SSDs and accessories.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Example Prompts -->
+
+                <div class="example-prompts">
+
+                    <button class="prompt-card">
+                        💬 Build me a gaming PC under $1000
+                    </button>
+
+                    <button class="prompt-card">
+                        💬 Why is my FPS dropping in Valorant?
+                    </button>
+
+                    <button class="prompt-card">
+                        💬 Recommend the best GPU for 1440p gaming
+                    </button>
+
+                    <button class="prompt-card">
+                        💬 Is my CPU bottlenecking my RTX 4070?
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section><!-- Everything that belongs to the landing page goes here -->
+
+</div>
+
+<!-- =========================
+     Chat Dashboard
+========================= -->
+
+<div id="chatScreen" class="hidden">
+
+    <div class="app-layout">
+
+    <!-- =========================
+         Sidebar
+    ========================== -->
     <aside class="sidebar">
-        <div class="sidebar-header">Model Settings</div>
-        <div class="sidebar-content">
-            
-            <div class="setting-group">
-                <label for="systemPrompt">System Prompt</label>
-                <textarea id="systemPrompt" rows="4">You are a helpful assistant.</textarea>
+
+        <div class="sidebar-top">
+
+            <div class="sidebar-logo">
+
+                <div class="logo-icon">
+                    🎮
+                </div>
+
+                <div class="logo-text">
+                    <h3>PC Game Consultant</h3>
+                    <span>Gaming Assistant</span>
+                </div>
+
             </div>
 
-            <div class="setting-group">
-                <div class="label-row">
-                    <label for="temperature">Temperature</label>
-                    <span id="tempValue" class="value-badge">0.7</span>
-                </div>
-                <input id="temperature" type="range" min="0" max="2" step="0.1" value="0.7">
+            <button id="newChatBtn" class="new-chat-btn">
+                <span class="plus">+</span>
+                <span>New Chat</span>
+            </button>
+
+        </div>
+
+        <!-- Conversation History -->
+        <div class="sidebar-history">
+
+            <div class="history-section">
+
+                <span class="history-title">
+                    Today
+                </span>
+
+                <button class="history-item active">
+                    Build RTX 5070 PC
+                </button>
+
+                <button class="history-item">
+                    FPS Optimization
+                </button>
+
+                <button class="history-item">
+                    Gaming Laptop
+                </button>
+
             </div>
 
-            <div class="setting-group">
-                <div class="label-row">
-                    <label for="topP">Top P</label>
-                    <span id="topPValue" class="value-badge">1.0</span>
-                </div>
-                <input id="topP" type="range" min="0" max="1" step="0.05" value="1">
-            </div>
+            <div class="history-section">
 
-            <div class="setting-group">
-                <div class="label-row">
-                    <label for="maxTokens">Max Tokens</label>
-                    <span id="tokensValue" class="value-badge">300</span>
-                </div>
-                <input id="maxTokens" type="range" min="100" max="2048" step="100" value="300">
+                <span class="history-title">
+                    Yesterday
+                </span>
+
+                <button class="history-item">
+                    GPU Bottleneck
+                </button>
+
+                <button class="history-item">
+                    Ryzen vs Intel
+                </button>
+
             </div>
 
         </div>
+
+        <!-- Footer -->
+        <div class="sidebar-footer">
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div class="profile-info">
+
+                    <span id="sidebarUserName">
+                        Guest
+                    </span>
+
+                    <small>
+                        PC Game Consultant
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </aside>
 
-    <!-- 2. Main Chat Engine Area -->
+    <!-- =========================
+         Main Chat Area
+    ========================== -->
+
     <main class="chat-container">
-        
-        <!-- Header with Title on Left, Auth0 controls on the Top-Right -->
+
+        <!-- Header -->
         <header class="chat-header">
-            <span class="bot-title">Pc Game Consultant</span>
             
-            <!-- Auth0 Login/Profile Dynamic Container -->
+
+            <span class="bot-title">
+                PC Game AI Assistant
+            </span>
+
             <div id="auth-widget" class="auth-flex">
+
                 <p id="userName" class="user-greeting"></p>
-                <button id="loginBtn" class="auth-btn">Log In</button>
-                <button id="logoutBtn" class="auth-btn hidden">Log Out</button>
+
+                <button id="loginBtn" class="auth-btn">
+                    Log In
+                </button>
+
+                <button id="logoutBtn" class="auth-btn hidden">
+                    Log Out
+                </button>
+
             </div>
+
         </header>
 
-        <!-- Message Box (Handles automatic scroll/text overflow cleanly) -->
-        <div class="chat-box" id="chatBox">
-            <div class="message assistant">
-                Hello! How can I help you today?
-            </div>
-        </div>
+        <!-- =========================
+             Landing Screen
+        ========================== -->
 
-        <!-- Bottom Text Input Bar -->
+        
+
+        <!-- =========================
+             Chat Messages
+        ========================== -->
+
+        <section id="chatBox" class="chat-box hidden">
+
+        </section>
+
+        <!-- =========================
+             Input Area
+        ========================== -->
+
         <div class="input-area">
-            <input id="userInput" type="text" placeholder="Ask anything...">
-            <button id="sendBtn">Send</button>
+
+            <input
+                id="userInput"
+                type="text"
+                placeholder="Ask anything about gaming PCs & Games..."
+            >
+
+            <button id="sendBtn">
+                Send
+            </button>
+
         </div>
 
     </main>
 
 </div>
 
-<!-- Auth0 SDK & App Business Logic Dependencies -->
+</div>
+
+<!-- Auth0 SDK -->
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+
+<!-- App -->
 <script src="app.js"></script>
 
 </body>

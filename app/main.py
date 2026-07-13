@@ -7,6 +7,8 @@ from app.schemas.chat import ChatRequest
 from app.services.groq_service import GroqService
 from app.services.database_service import DatabaseService
 
+from fastapi.responses import JSONResponse
+
 
 app = FastAPI(title="Clean Architecture Groq AI Pipeline")
 
@@ -27,6 +29,22 @@ db_service = DatabaseService()
 def test_db():
     return db_service.test_connection()
 
+@app.post("/api/chat/new")
+def create_chat(payload: ChatRequest):
+
+    # Get or create the user
+    db_user = db_service.get_or_create_user(
+        payload.user.model_dump()
+    )
+
+    # Create new chat session
+    session = db_service.create_chat_session(
+        db_user["id"]
+    )
+
+    return JSONResponse({
+        "session_id": session["id"]
+    })
 
 @app.post("/api/chat")
 async def chat_endpoint(payload: ChatRequest):
