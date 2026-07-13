@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Game AI Assistant</title>
+    <title>Ai gaming Assistant</title>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="sidebar.css">
@@ -13,40 +14,40 @@
 
 <body>
 
-<!-- =========================
+    <!-- =========================
      Landing Screen
 ========================= -->
 
-<div id="landingScreen">
+    <div id="landingScreen">
 
-    <!-- Landing Navigation -->
-<nav class="landing-navbar">
+        <!-- Landing Navigation -->
+        <nav class="landing-navbar">
 
-    <div class="landing-brand">
+            <div class="landing-brand">
 
-        <span class="landing-logo-icon">🎮</span>
+                <span class="landing-logo-icon">🎮</span>
 
-        <span class="landing-brand-text">
-            PC Game AI Assistant
-        </span>
+                <span class="landing-brand-text">
+                     Ai Gaming Assistant
+                </span>
 
-    </div>
+            </div>
 
-    <div class="landing-auth">
+            <div class="landing-auth">
 
-        <button id="landingLoginBtn" class="landing-login-btn">
-            Log In
-        </button>
+                <button id="landingLoginBtn" class="landing-login-btn">
+                    Log In
+                </button>
 
-        <button id="landingSignupBtn" class="landing-signup-btn">
-            Sign Up
-        </button>
+                <button id="landingSignupBtn" class="landing-signup-btn">
+                    Sign Up
+                </button>
 
-    </div>
+            </div>
 
-</nav>
+        </nav>
 
-    <section id="landingPage" class="landing-page">
+        <section id="landingPage" class="landing-page">
 
             <div class="landing-content">
 
@@ -55,7 +56,7 @@
                 </div>
 
                 <h1>
-                    PC Game AI Assistant
+                   Ai Gaming Assistant
                 </h1>
 
                 <p class="landing-subtitle">
@@ -161,184 +162,122 @@
 
         </section><!-- Everything that belongs to the landing page goes here -->
 
-</div>
+    </div>
 
-<!-- =========================
+    <!-- =========================
      Chat Dashboard
 ========================= -->
 
-<div id="chatScreen" class="hidden">
+    <div id="chatScreen" class="hidden">
 
-    <div class="app-layout">
+        <div class="app-layout">
 
-    <!-- =========================
+            <!-- =========================
          Sidebar
     ========================== -->
-    <aside class="sidebar">
+            <aside class="sidebar">
 
-        <div class="sidebar-top">
+                <div class="sidebar-header">
 
-            <div class="sidebar-logo">
+                    <div class="sidebar-logo">
 
-                <div class="logo-icon">
-                    🎮
-                </div>
+                        🎮
+                        <span>Ai gaming Assistant</span>
 
-                <div class="logo-text">
-                    <h3>PC Game Consultant</h3>
-                    <span>Gaming Assistant</span>
-                </div>
+                    </div>
 
-            </div>
+                    <button id="newChatBtn" class="new-chat-btn">
 
-            <button id="newChatBtn" class="new-chat-btn">
-                <span class="plus">+</span>
-                <span>New Chat</span>
-            </button>
+                        + New Chat
 
-        </div>
-
-        <!-- Conversation History -->
-        <div class="sidebar-history">
-
-            <div class="history-section">
-
-                <span class="history-title">
-                    Today
-                </span>
-
-                <button class="history-item active">
-                    Build RTX 5070 PC
-                </button>
-
-                <button class="history-item">
-                    FPS Optimization
-                </button>
-
-                <button class="history-item">
-                    Gaming Laptop
-                </button>
-
-            </div>
-
-            <div class="history-section">
-
-                <span class="history-title">
-                    Yesterday
-                </span>
-
-                <button class="history-item">
-                    GPU Bottleneck
-                </button>
-
-                <button class="history-item">
-                    Ryzen vs Intel
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- Footer -->
-        <div class="sidebar-footer">
-
-            <div class="profile-box">
-
-                <div class="profile-avatar">
-                    A
-                </div>
-
-                <div class="profile-info">
-
-                    <span id="sidebarUserName">
-                        Guest
-                    </span>
-
-                    <small>
-                        PC Game Consultant
-                    </small>
+                    </button>
 
                 </div>
 
-            </div>
 
-        </div>
 
-    </aside>
 
-    <!-- =========================
+                <!-- Conversation History -->
+                <div id="chatHistory" class="sidebar-content">
+
+                </div>
+
+
+            </aside>
+
+            <!-- =========================
          Main Chat Area
     ========================== -->
 
-    <main class="chat-container">
+            <main class="chat-container">
 
-        <!-- Header -->
-        <header class="chat-header">
-            
+                <!-- Header -->
+                <header class="chat-header">
 
-            <span class="bot-title">
-                PC Game AI Assistant
-            </span>
+                    <button id="menuBtn" class="menu-btn">
+                        ☰
+                    </button>
 
-            <div id="auth-widget" class="auth-flex">
+                    <span class="bot-title">
+                        Ai gaming Assistant
+                    </span>
 
-                <p id="userName" class="user-greeting"></p>
+                    <div id="auth-widget" class="auth-flex">
 
-                <button id="loginBtn" class="auth-btn">
-                    Log In
-                </button>
+                        <p id="userName" class="user-greeting"></p>
 
-                <button id="logoutBtn" class="auth-btn hidden">
-                    Log Out
-                </button>
+                        <button id="loginBtn" class="auth-btn">
+                            Log In
+                        </button>
 
-            </div>
+                        <button id="logoutBtn" class="auth-btn hidden">
+                            Log Out
+                        </button>
 
-        </header>
+                    </div>
 
-        <!-- =========================
+                </header>
+
+                <!-- =========================
              Landing Screen
         ========================== -->
 
-        
 
-        <!-- =========================
+
+                <!-- =========================
              Chat Messages
         ========================== -->
 
-        <section id="chatBox" class="chat-box hidden">
+                <section id="chatBox" class="chat-box hidden">
 
-        </section>
+                </section>
 
-        <!-- =========================
+                <!-- =========================
              Input Area
         ========================== -->
+                <div class="input-area">
+                    <div class="input-wrapper">
 
-        <div class="input-area">
+                        <input id="userInput" type="text" placeholder="Ask anything about gaming PCs & Games...">
 
-            <input
-                id="userInput"
-                type="text"
-                placeholder="Ask anything about gaming PCs & Games..."
-            >
+                        <button id="sendBtn">
+                            Send
+                        </button>
 
-            <button id="sendBtn">
-                Send
-            </button>
+                    </div>
 
-        </div>
+            </div>
 
-    </main>
+        </main>
 
-</div>
+    </div>
 
-</div>
+    <!-- Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 
-<!-- Auth0 SDK -->
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
-
-<!-- App -->
-<script src="app.js"></script>
+    <!-- App -->
+    <script src="app.js"></script>
 
 </body>
+
 </html>

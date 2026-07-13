@@ -95,7 +95,19 @@ class DatabaseService:
 
      return response.data[0]
 
+    def get_user_chat_sessions(self, user_id: int):
 
+     response = (
+        self.client
+        .table("chat_sessions")
+        .select("*")
+        .eq("user_id", user_id)
+        .order("created_at", desc=True)
+        .execute()
+    )
+
+     return response.data
+    
     def save_message(self, session_id: int, role: str, content: str):
      response = (
         self.client
@@ -118,7 +130,6 @@ class DatabaseService:
         .single()
         .execute()
     )
-
      return response.data
     def get_messages(self, session_id: str):
      response = (

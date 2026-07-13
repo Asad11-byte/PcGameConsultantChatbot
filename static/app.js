@@ -1,6 +1,7 @@
 // ================================
 // Auth0 Configuration
 // ================================
+
 let currentSessionId = null;
 let auth0Client = null;
 
@@ -60,6 +61,7 @@ async function updateUI() {
 
         const user = await auth0Client.getUser();
 
+        loadChatHistory();
         userName.textContent = `👤 ${user.name}`;
 
         loginBtn.style.display = "none";
@@ -196,16 +198,70 @@ async function sendMessage() {
 
                 message: text,
 
-                user: {
-                    sub: user.sub,
-                    email: user.email,
-                    name: user.name,
-                    picture: user.picture
-                }
+                user: user,
+
+                session_id: currentSessionId
 
             })
 
         });
+        // ================================
+        // Load Existing Chat
+        // ================================
+
+        async function openChat(sessionId) {
+
+            currentSessionId = sessionId;
+
+
+            const response = await fetch(
+                `http://127.0.0.1:8000/api/chat/${sessionId}`
+            );
+
+
+            const data = await response.json();
+
+
+            const chatBox = document.getElementById("chatBox");
+
+
+            chatBox.innerHTML = "";
+
+
+            data.messages.forEach(msg => {
+
+                appendMessage(
+                    msg.content,
+                    msg.role === "user"
+                        ? "user"
+                        : "assistant"
+                );
+
+            });
+
+        }
+        if (window.innerWidth <= 768) {
+
+            document
+                .querySelector(".sidebar")
+                .classList.remove("active");
+
+        }
+        const sessionId = response.headers.get(
+            "X-Session-Id"
+        );
+
+        if (sessionId) {
+
+            currentSessionId = sessionId;
+
+            console.log(
+                "Current Session:",
+                currentSessionId
+            );
+            loadChatHistory();
+
+        }
 
         if (!response.ok) {
 
@@ -279,7 +335,73 @@ function appendMessage(text, sender) {
     return div;
 
 }
+async function loadChatHistory() {
 
+    if (!auth0Client) return;
+
+
+    const user = await auth0Client.getUser();
+
+
+    const response = await fetch(
+        "http://127.0.0.1:8000/api/chat/history",
+        {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                message: "history",
+
+                user: user
+
+            })
+
+        }
+    );
+
+
+    const data = await response.json();
+
+
+    const history =
+        document.getElementById("chatHistory");
+
+
+    history.innerHTML = "";
+
+
+    data.chats.forEach(chat => {
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className = "chat-item";
+
+
+        div.textContent =
+            chat.title;
+
+
+        div.onclick = () => {
+
+            openChat(chat.id);
+
+        };
+
+
+        history.appendChild(div);
+
+
+    });
+
+}
 
 // ================================
 // Start Application
@@ -301,35 +423,56 @@ window.addEventListener("load", () => {
 
     document.querySelectorAll(".prompt-card").forEach(card => {
 
-    card.addEventListener("click", async () => {
+        card.addEventListener("click", async () => {
 
-        const prompt = card.textContent.trim();
+            const prompt = card.textContent.trim();
 
-        if (await auth0Client.isAuthenticated()) {
+            if (await auth0Client.isAuthenticated()) {
 
-            document.getElementById("userInput").value = prompt;
+                document.getElementById("userInput").value = prompt;
 
-            sendMessage();
+                sendMessage();
 
-        } else {
+            } else {
 
-            localStorage.setItem("pendingPrompt", prompt);
+                localStorage.setItem("pendingPrompt", prompt);
 
-            await auth0Client.loginWithRedirect();
+                await auth0Client.loginWithRedirect();
 
-        }
+            }
+
+        });
 
     });
 
+document.getElementById("newChatBtn").addEventListener("click", () => {
+
+    currentSessionId = null;
+
+    document.getElementById("chatBox").innerHTML = "";
+
+    document.getElementById("userInput").value = "";
+
+    document.getElementById("userInput").focus();
+
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+
+        document
+            .querySelector(".sidebar")
+            .classList.remove("active");
+
+    }
+
 });
 
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.querySelector(".sidebar");
 
-    document.getElementById("newChatBtn").addEventListener("click", () => {
+    menuBtn.addEventListener("click", () => {
 
-        showLandingPage();
-
-        document.getElementById("userInput").focus();
-
+        sidebar.classList.toggle("active");
+  console.log(sidebar.className);
     });
 
 });

@@ -20,10 +20,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ai_service = GroqService()
+
 db_service = DatabaseService()
+ai_service = GroqService(db_service)
 
+@app.post("/api/chat/history")
+def chat_history(payload: ChatRequest):
 
+    db_user = db_service.get_or_create_user(
+        payload.user.model_dump()
+    )
+
+    sessions = db_service.get_user_chat_sessions(
+        db_user["id"]
+    )
+
+    return JSONResponse({
+        "chats": sessions
+    })
+
+@app.get("/api/chat/{session_id}")
+def get_chat_messages(session_id: str):
+
+    messages = db_service.get_messages(
+        session_id
+    )
+
+    return JSONResponse({
+        "messages": messages
+    })
 
 @app.get("/api/test-db")
 def test_db():
@@ -49,16 +74,43 @@ def create_chat(payload: ChatRequest):
 @app.post("/api/chat")
 async def chat_endpoint(payload: ChatRequest):
 
-    # Create user in Supabase (or return existing user)
+    # Create user if needed
     db_user = db_service.get_or_create_user(payload.user.model_dump())
 
-    print("\n========== DATABASE USER ==========")
-    print(db_user)
-    print("===================================\n")
+    # -------------------------
+    # Create chat session
+    # -------------------------
+
+    session_id = payload.session_id
+
+    if session_id is None:
+
+        session = db_service.create_chat_session(
+            user_id=db_user["id"],
+            title=payload.message[:50]
+        )
+
+        session_id = session["id"]
+
+    # -------------------------
+    # Save user message
+    # -------------------------
+
+    db_service.save_message(
+        session_id=session_id,
+        role="user",
+        content=payload.message
+    )
 
     return StreamingResponse(
-        ai_service.get_chat_stream(payload.message),
-        media_type="text/plain"
+        ai_service.get_chat_stream(
+            payload.message,
+            session_id=session_id
+        ),
+        media_type="text/plain",
+        headers={
+            "X-Session-Id": str(session_id)
+        }
     )
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
