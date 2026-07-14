@@ -3,6 +3,8 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
+from fastapi.responses import FileResponse
+
 from app.schemas.chat import ChatRequest
 from app.services.groq_service import GroqService
 from app.services.database_service import DatabaseService
@@ -113,4 +115,9 @@ async def chat_endpoint(payload: ChatRequest):
         }
     )
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/")
+async def home():
+    return FileResponse("static/index.html")

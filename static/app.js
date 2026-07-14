@@ -186,7 +186,7 @@ async function sendMessage() {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:8000/api/chat", {
+        const response = await fetch("/api/chat", {
 
             method: "POST",
 
@@ -215,7 +215,7 @@ async function sendMessage() {
 
 
             const response = await fetch(
-                `http://127.0.0.1:8000/api/chat/${sessionId}`
+                `/api/chat/${sessionId}`
             );
 
 
@@ -344,7 +344,7 @@ async function loadChatHistory() {
 
 
     const response = await fetch(
-        "http://127.0.0.1:8000/api/chat/history",
+        "/api/chat/history",
         {
 
             method: "POST",
