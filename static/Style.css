@@ -39,19 +39,19 @@ body {
     overflow-y:auto;
 }
 
-.menu-btn {
+.menu-btn{
 
-    display: none;
+    display:none;
 
-    background: transparent;
+    background:none;
 
-    border: none;
+    border:none;
 
-    color: white;
+    color:white;
 
-    font-size: 24px;
+    font-size:28px;
 
-    cursor: pointer;
+    cursor:pointer;
 
 }
 /* Base Utility Class */
@@ -339,21 +339,44 @@ input[type="text"], textarea {
    ========================================================================== */
 
 /* Tablet & Mobile Screens: Sidebar slides out of sight smoothly */
-@media (max-width: 900px) {
-    .sidebar {
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 99;
-        transform: translateX(-100%); /* Hides sidebar smoothly off-screen */
-    }
+@media (max-width:900px){
+
+
+.menu-btn{
+
+    display:block;
+
+}
+
+
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:260px;
+    height:100vh;
+
+    z-index:1000;
+
+    transform:translateX(-100%);
+    transition:transform .3s ease;
+
+}
+
+.sidebar.active{
+
+    transform:translateX(0);
+
+}
+
+}
     
     /* Optional Toggle Setup: If you add an '.open' class to sidebar via JS, it sweeps inward */
-    .sidebar.open {
-        transform: translateX(0);
-        box-shadow: 10px 0 30px rgba(0,0,0,0.4);
-    }
+   
     
     .message {
         max-width: 100%;

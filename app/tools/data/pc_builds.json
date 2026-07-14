@@ -1,0 +1,23 @@
+{
+  "500": {
+    "Gaming": {
+      "CPU": "Ryzen 5 5500",
+      "GPU": "RTX 3050",
+      "RAM": "16GB DDR4",
+      "Storage": "1TB NVMe SSD",
+      "Motherboard": "B450",
+      "PSU": "550W Bronze"
+    }
+  },
+
+  "1000": {
+    "Gaming": {
+      "CPU": "Ryzen 7 7700",
+      "GPU": "RTX 4070",
+      "RAM": "32GB DDR5",
+      "Storage": "1TB NVMe SSD",
+      "Motherboard": "B650",
+      "PSU": "750W Gold"
+    }
+  }
+}
