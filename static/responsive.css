@@ -1,445 +1,132 @@
 /* ===================================
    Responsive Design
 =================================== */
-/* =========================
-   Mobile Sidebar
-========================= */
+
 /* ===================================
-   Responsive Design
+   Tablets (≤1200px)
 =================================== */
-/* =========================
-   Mobile Sidebar
-========================= */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 
-    .sidebar {
-
-        position: fixed;
-
-        top: 0;
-
-        left: -290px;
-
-        width: 260px;
-
-        height: 100vh;
-
-        z-index: 1000;
-
-        transition: left 0.3s ease;
-
-        overflow-y: auto;
-    }
-
-    .sidebar.active {
-
-        left: 0;
-
-    }
-
-    .chat-container {
-
-        width: 100%;
-
+    .landing-content {
+        max-width: 900px;
+        padding: 40px 25px;
     }
 
 }
 
+/* ===================================
+   Small Laptops & Tablets (≤992px)
+=================================== */
+@media (max-width: 992px) {
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .example-prompts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .landing-content h1 {
+        font-size: 46px;
+    }
+
+}
+
+/* ===================================
+   Mobile & Tablets (≤768px)
+=================================== */
 @media (max-width: 768px) {
+
+    /* ---------- Mobile Sidebar ---------- */
 
     .app-layout {
         position: relative;
     }
 
-    .sidebar {
 
-        position: fixed;
-
-        top: 0;
-
-        left: -280px;
-
-        width: 260px;
-
-        height: 100vh;
-
-        z-index: 1000;
-
-        transition: left .3s ease;
-
+    .menu-btn {
+        display: block;
     }
 
-    .sidebar.active {
+    /* ---------- Landing Page ---------- */
 
-        left: 0;
-
+    .landing-navbar {
+        padding: 18px 20px;
     }
 
-    .chat-container {
+    .landing-brand-text {
+        font-size: 18px;
+    }
 
+    .landing-auth {
+        gap: 10px;
+    }
+
+    .landing-login-btn,
+    .landing-signup-btn {
+        padding: 10px 16px;
+    }
+
+    .feature-grid,
+    .example-prompts {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ===================================
+   Phones (≤576px)
+=================================== */
+@media (max-width: 576px) {
+
+    .landing-navbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .landing-brand {
+        justify-content: center;
+    }
+
+    .landing-auth {
         width: 100%;
-
-    }
-
-}
-@media (max-width:768px){
-
-    .menu-btn{
-
-        display:block;
-
-    }
-
-}
-
-/* -----------------------------
-   1200px
-------------------------------*/
-
-@media (max-width:1200px){
-
-    .landing-content{
-
-        max-width:900px;
-
-        padding:40px 25px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   992px
-------------------------------*/
-
-@media (max-width:992px){
-
-    .feature-grid{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .example-prompts{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .landing-content h1{
-
-        font-size:46px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   768px
-------------------------------*/
-
-@media (max-width:768px){
-
-    .landing-navbar{
-
-        padding:18px 20px;
-
-    }
-
-    .landing-brand-text{
-
-        font-size:18px;
-
-    }
-
-    .landing-auth{
-
-        gap:10px;
-
+        justify-content: center;
     }
 
     .landing-login-btn,
-    .landing-signup-btn{
-
-        padding:10px 16px;
-
+    .landing-signup-btn {
+        width: 140px;
     }
 
-    .feature-grid{
-
-        grid-template-columns:1fr;
-
+    .landing-content {
+        padding: 20px;
     }
 
-    .example-prompts{
+    .landing-content h1 {
+        font-size: 32px;
+    }
 
-        grid-template-columns:1fr;
-
+    .landing-subtitle {
+        font-size: 15px;
     }
 
 }
 
+/* ===================================
+   Small Phones (≤380px)
+=================================== */
+@media (max-width: 380px) {
 
-/* -----------------------------
-   Mobile
-------------------------------*/
-
-@media (max-width:576px){
-
-    .landing-navbar{
-
-        flex-direction:column;
-
-        align-items:center;
-
-        gap:20px;
-
-    }
-
-    .landing-brand{
-
-        justify-content:center;
-
-    }
-
-    .landing-auth{
-
-        width:100%;
-
-        justify-content:center;
-
+    .landing-auth {
+        flex-direction: column;
+        width: 100%;
     }
 
     .landing-login-btn,
-    .landing-signup-btn{
-
-        width:140px;
-
-    }
-
-    .landing-content{
-
-        padding:20px;
-
-    }
-
-    .landing-content h1{
-
-        font-size:32px;
-
-    }
-
-    .landing-subtitle{
-
-        font-size:15px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   Small Phones
-------------------------------*/
-
-@media (max-width:380px){
-
-    .landing-auth{
-
-        flex-direction:column;
-
-        width:100%;
-
-    }
-
-    .landing-login-btn,
-    .landing-signup-btn{
-
-        width:100%;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .menu-btn{
-
-        display:block;
-
-    }
-
-}
-
-/* -----------------------------
-   1200px
-------------------------------*/
-
-@media (max-width:1200px){
-
-    .landing-content{
-
-        max-width:900px;
-
-        padding:40px 25px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   992px
-------------------------------*/
-
-@media (max-width:992px){
-
-    .feature-grid{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .example-prompts{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .landing-content h1{
-
-        font-size:46px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   768px
-------------------------------*/
-
-@media (max-width:768px){
-
-    .landing-navbar{
-
-        padding:18px 20px;
-
-    }
-
-    .landing-brand-text{
-
-        font-size:18px;
-
-    }
-
-    .landing-auth{
-
-        gap:10px;
-
-    }
-
-    .landing-login-btn,
-    .landing-signup-btn{
-
-        padding:10px 16px;
-
-    }
-
-    .feature-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .example-prompts{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-
-
-/* -----------------------------
-   Mobile
-------------------------------*/
-
-@media (max-width:576px){
-
-    .landing-navbar{
-
-        flex-direction:column;
-
-        align-items:center;
-
-        gap:20px;
-
-    }
-
-    .landing-brand{
-
-        justify-content:center;
-
-    }
-
-    .landing-auth{
-
-        width:100%;
-
-        justify-content:center;
-
-    }
-
-    .landing-login-btn,
-    .landing-signup-btn{
-
-        width:140px;
-
-    }
-
-    .landing-content{
-
-        padding:20px;
-
-    }
-
-    .landing-content h1{
-
-        font-size:32px;
-
-    }
-
-    .landing-subtitle{
-
-        font-size:15px;
-
-    }
-
-}
-
-
-/* -----------------------------
-   Small Phones
-------------------------------*/
-
-@media (max-width:380px){
-
-    .landing-auth{
-
-        flex-direction:column;
-
-        width:100%;
-
-    }
-
-    .landing-login-btn,
-    .landing-signup-btn{
-
-        width:100%;
-
+    .landing-signup-btn {
+        width: 100%;
     }
 
 }

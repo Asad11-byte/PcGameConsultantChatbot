@@ -209,37 +209,7 @@ async function sendMessage() {
         // Load Existing Chat
         // ================================
 
-        async function openChat(sessionId) {
-
-            currentSessionId = sessionId;
-
-
-            const response = await fetch(
-                `/api/chat/${sessionId}`
-            );
-
-
-            const data = await response.json();
-
-
-            const chatBox = document.getElementById("chatBox");
-
-
-            chatBox.innerHTML = "";
-
-
-            data.messages.forEach(msg => {
-
-                appendMessage(
-                    msg.content,
-                    msg.role === "user"
-                        ? "user"
-                        : "assistant"
-                );
-
-            });
-
-        }
+        
         if (window.innerWidth <= 768) {
 
             document
@@ -297,6 +267,104 @@ async function sendMessage() {
     }
 
 }
+async function loadChatHistory() {
+
+    if (!auth0Client) return;
+
+
+    const user = await auth0Client.getUser();
+
+
+    const response = await fetch(
+        "/api/chat/history",
+        {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                message: "history",
+
+                user: user
+
+            })
+
+        }
+    );
+
+
+    const data = await response.json();
+
+
+    const history =
+        document.getElementById("chatHistory");
+
+
+    history.innerHTML = "";
+
+
+    data.chats.forEach(chat => {
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className = "chat-item";
+
+
+        div.textContent =
+            chat.title;
+
+
+        div.onclick = () => {
+
+            openChat(chat.id);
+
+        };
+
+
+        history.appendChild(div);
+
+
+    });
+
+}
+async function openChat(sessionId) {
+
+            currentSessionId = sessionId;
+
+
+            const response = await fetch(
+                `/api/chat/${sessionId}`
+            );
+
+
+            const data = await response.json();
+
+
+            const chatBox = document.getElementById("chatBox");
+
+
+            chatBox.innerHTML = "";
+
+
+            data.messages.forEach(msg => {
+
+                appendMessage(
+                    msg.content,
+                    msg.role === "user"
+                        ? "user"
+                        : "assistant"
+                );
+
+            });
+
+        }
 
 
 // ================================

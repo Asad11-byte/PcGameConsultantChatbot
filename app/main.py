@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi.responses import FileResponse
 
+from app.services.prompt_security_service import PromptSecurityService
+
 from app.schemas.chat import ChatRequest
 from app.services.groq_service import GroqService
 from app.services.database_service import DatabaseService
@@ -12,7 +14,10 @@ from app.services.database_service import DatabaseService
 from fastapi.responses import JSONResponse
 
 
-app = FastAPI(title="Clean Architecture Groq AI Pipeline")
+app = FastAPI(
+    title="AI Gaming Assistant API",
+    version="1.0.0"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,7 +28,9 @@ app.add_middleware(
 )
 
 
+
 db_service = DatabaseService()
+security_service = PromptSecurityService()
 ai_service = GroqService(db_service)
 
 @app.post("/api/chat/history")
@@ -79,6 +86,23 @@ async def chat_endpoint(payload: ChatRequest):
     # Create user if needed
     db_user = db_service.get_or_create_user(payload.user.model_dump())
 
+# security check for prompt injection
+
+    security = security_service.validate(payload.message)
+
+    if not security.allowed:
+
+     return JSONResponse(
+        {
+            "error": security.message
+        },
+        status_code=400
+    )
+
+    payload.message = security.cleaned_prompt
+
+
+
     # -------------------------
     # Create chat session
     # -------------------------
@@ -94,6 +118,7 @@ async def chat_endpoint(payload: ChatRequest):
 
         session_id = session["id"]
 
+
     # -------------------------
     # Save user message
     # -------------------------
@@ -103,6 +128,7 @@ async def chat_endpoint(payload: ChatRequest):
         role="user",
         content=payload.message
     )
+
 
     return StreamingResponse(
         ai_service.get_chat_stream(
