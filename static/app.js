@@ -1,3 +1,4 @@
+
 // ================================
 // Auth0 Configuration
 // ================================
@@ -241,30 +242,34 @@ async function sendMessage() {
 
         }
 
-        const reader = response.body.getReader();
+       const reader = response.body.getReader();
 
-        const decoder = new TextDecoder();
+const decoder = new TextDecoder();
 
-        while (true) {
+let fullResponse = "";
 
-            const { done, value } = await reader.read();
+while (true) {
 
-            if (done) break;
+    const { done, value } = await reader.read();
 
-            assistant.textContent += decoder.decode(value);
+    if (done) break;
 
-            document.getElementById("chatBox").scrollTop =
-                document.getElementById("chatBox").scrollHeight;
+    fullResponse += decoder.decode(value, { stream: true });
 
-        }
+    assistant.innerHTML = marked.parse(fullResponse);
 
-    } catch (err) {
+    document.getElementById("chatBox").scrollTop =
+        document.getElementById("chatBox").scrollHeight;
 
-        console.error(err);
+}
 
-        assistant.textContent = "❌ " + err.message;
+} catch (err) {
 
-    }
+    console.error(err);
+
+    assistant.innerHTML = `
+        <strong>❌ Error:</strong> ${err.message}
+    `;
 
 }
 async function loadChatHistory() {
@@ -394,7 +399,15 @@ function appendMessage(text, sender) {
 
     div.className = `message ${sender}`;
 
-    div.textContent = text;
+    if (sender === "assistant") {
+
+        div.innerHTML = marked.parse(text);
+
+    } else {
+
+        div.textContent = text;
+
+    }
 
     chatBox.appendChild(div);
 
@@ -403,6 +416,7 @@ function appendMessage(text, sender) {
     return div;
 
 }
+
 async function loadChatHistory() {
 
     if (!auth0Client) return;
@@ -445,29 +459,54 @@ async function loadChatHistory() {
 
     data.chats.forEach(chat => {
 
+    const div = document.createElement("div");
 
-        const div =
-            document.createElement("div");
+    div.className = "chat-item";
 
+    div.innerHTML = `
+        <span class="chat-title">${chat.title}</span>
 
-        div.className = "chat-item";
+        <div class="chat-actions">
 
+            <button class="chat-edit" title="Rename">
+                ✏️
+            </button>
 
-        div.textContent =
-            chat.title;
+            <button class="chat-delete" title="Delete">
+                🗑️
+            </button>
 
+        </div>
+    `;
 
-        div.onclick = () => {
+    // Open chat
+    div.querySelector(".chat-title").onclick = () => {
 
-            openChat(chat.id);
+        openChat(chat.id);
 
-        };
+    };
 
+    // Rename
+    div.querySelector(".chat-edit").onclick = (e) => {
 
-        history.appendChild(div);
+        e.stopPropagation();
 
+        renameChat(chat.id, chat.title);
 
-    });
+    };
+
+    // Delete
+    div.querySelector(".chat-delete").onclick = (e) => {
+
+        e.stopPropagation();
+
+        deleteChat(chat.id);
+
+    };
+
+    history.appendChild(div);
+
+});
 
 }
 
@@ -534,13 +573,104 @@ document.getElementById("newChatBtn").addEventListener("click", () => {
 
 });
 
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.querySelector(".sidebar");
+    // ======================================
+// Mobile Sidebar
+// ======================================
 
-    menuBtn.addEventListener("click", () => {
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
 
-        sidebar.classList.toggle("active");
-  console.log(sidebar.className);
-    });
+// Create overlay
+const overlay = document.createElement("div");
+overlay.className = "sidebar-overlay";
+document.body.appendChild(overlay);
+
+// Open / Close sidebar
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
 
 });
+
+// Close when clicking overlay
+overlay.addEventListener("click", closeSidebar);
+
+// Close with ESC
+document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Escape") {
+        closeSidebar();
+    }
+
+});
+
+function closeSidebar() {
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+}
+
+// Automatically close after selecting a chat (mobile only)
+document.addEventListener("click", (e) => {
+
+    if (window.innerWidth <= 768 && e.target.closest(".chat-item")) {
+        closeSidebar();
+    }
+
+});
+// ======================================
+// Rename Chat
+// ======================================
+
+async function renameChat(chatId, currentTitle) {
+
+    const newTitle = prompt(
+        "Rename conversation:",
+        currentTitle
+    );
+
+    if (
+        !newTitle ||
+        newTitle.trim() === "" ||
+        newTitle === currentTitle
+    ) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/api/chat/${chatId}/rename`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    title: newTitle.trim()
+                })
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error("Unable to rename chat.");
+
+        }
+
+        loadChatHistory();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
+}
+
+

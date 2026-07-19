@@ -59,6 +59,74 @@ def get_chat_messages(session_id: str):
         "messages": messages
     })
 
+# ==========================================
+# Rename Chat
+# ==========================================
+
+@app.put("/api/chat/{session_id}/rename")
+def rename_chat(
+    session_id: str,
+    payload: dict,
+):
+
+    title = payload.get("title", "").strip()
+
+    if not title:
+        return JSONResponse(
+            {
+                "error": "Title cannot be empty."
+            },
+            status_code=400
+        )
+
+    chat = db_service.get_chat_session(session_id)
+
+    if not chat:
+        return JSONResponse(
+            {
+                "error": "Chat not found."
+            },
+            status_code=404
+        )
+
+    updated = db_service.rename_chat_session(
+        session_id=session_id,
+        title=title,
+    )
+
+    return JSONResponse(
+        {
+            "success": True,
+            "chat": updated,
+        }
+    )
+
+
+# ==========================================
+# Delete Chat
+# ==========================================
+
+@app.delete("/api/chat/{session_id}")
+def delete_chat(session_id: str):
+
+    chat = db_service.get_chat_session(session_id)
+
+    if not chat:
+        return JSONResponse(
+            {
+                "error": "Chat not found."
+            },
+            status_code=404
+        )
+
+    db_service.delete_chat_session(session_id)
+
+    return JSONResponse(
+        {
+            "success": True
+        }
+    )
+
 @app.get("/api/test-db")
 def test_db():
     return db_service.test_connection()
