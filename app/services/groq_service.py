@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 
 from app.tools.prompt_parser import PromptParser 
 
-from prompt_toolkit import prompt
+# from prompt_toolkit import prompt
 
 from app.tools.tool_registry import ToolRegistry
 from app.tools.tool_executor import ToolExecutor
