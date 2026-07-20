@@ -1,6 +1,4 @@
-Here is your updated, highly professional `README.md`. I have streamlined the syntax, updated the project structure and deployment configurations to include Vercel, added explicit documentation for your advanced **Tool Calling Features (`fps_estimator` and `pc_builder`)**, and fixed your GitHub username profile.
 
-```markdown
 # 🎮 PC Game Consultant Chatbot
 
 An AI-powered **PC Game Consultant Chatbot** that helps gamers build custom gaming rigs, troubleshoot complex hardware issues, diagnose real-time performance bottlenecks, optimize frame rates, and receive intelligent component pairings.
