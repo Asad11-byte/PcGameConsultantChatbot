@@ -270,7 +270,7 @@ POST /api/chat
 **Asad Ali**
 
 * **GitHub:** [Asad11-byte](https://github.com/Asad11-byte)
-* **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com/in/your-linkedin)
+* **LinkedIn:** [Your LinkedIn Profile](www.linkedin.com/in/asad-ali111)
 
 ---
 
