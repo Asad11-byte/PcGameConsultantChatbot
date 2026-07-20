@@ -14,7 +14,7 @@ The application is built using a modern decoupled stack: **FastAPI** on the back
   - `pc_builder`: Evaluates hardware compatibility, structural performance bottlenecks, and balance margins relative to pricing limits.
   - `fps_estimator`: Forecasts runtime rendering performance based on targeted CPU, GPU, resolution scaling, and graphical quality choices.
 - 💬 **Real-Time Response Streams:** Sub-second token delivery powered by the Groq SDK inference engine.
-- 🔐 **Secure Authentication layer:** User account onboarding and runtime access tokens handled via Auth0 hooks.
+- 🔐 **Secure Authentication Layer:** User account onboarding and runtime access tokens handled via Auth0 hooks.
 - 💾 **Persistent Session Histories:** Automatically initializes multiple isolated chat profiles bound to unique relational rows inside Supabase.
 - 📱 **Fluid Responsive Viewports:** Custom media query boundaries optimized from desktop dimensions down to ultra-small mobile displays, eliminating layout shifting or scaling bugs.
 
@@ -40,45 +40,40 @@ The application is built using a modern decoupled stack: **FastAPI** on the back
 
 # 🏗️ Project Architecture
 
-
-```
-
-```
-                       ┌─────────────────────┐
-                       │     Web Browser     │
-                       │ HTML • CSS • JS     │
-                       └──────────┬──────────┘
-                                  │
-                                  │ HTTP / Serverless Route
-                                  │
-                       ┌──────────▼──────────┐
-                       │       FastAPI       │
-                       │    REST Endpoints   │
-                       └──────────┬──────────┘
-                                  │
-         ┌────────────────────────┼────────────────────────┐
-         │                        │                        │
-         │                        │                        │
- ┌───────▼────────┐      ┌────────▼────────┐      ┌────────▼────────┐
- │ Authentication │      │  Groq Service   │      │ Database Service│
- │     Auth0      │      │ (Tool Calling)  │      │    Supabase     │
- └────────────────┘      └────────┬────────┘      └────────┬────────└
-                                  │                        │
-                    ┌─────────────┴─────────────┐          │
-                    │   Local Python Tools      │          │
-                    │ • pc_builder              │          │
-                    │ • fps_estimator           │          │
-                    └───────────────────────────┘          │
-                                                           │
-                                           ┌───────────────▼──────────────┐
-                                           │         PostgreSQL           │
-                                           │                              │
-                                           │ • Users                      │
-                                           │ • Chat Sessions              │
-                                           │ • Messages                   │
-                                           └──────────────────────────────┘
-
-```
+```text
+                        ┌─────────────────────┐
+                        │     Web Browser     │
+                        │ HTML • CSS • JS     │
+                        └──────────┬──────────┘
+                                   │
+                                   │ HTTP / Serverless Route
+                                   │
+                        ┌──────────▼──────────┐
+                        │       FastAPI       │
+                        │    REST Endpoints   │
+                        └──────────┬──────────┘
+                                   │
+         ┌─────────────────────────┼─────────────────────────┐
+         │                         │                         │
+         │                         │                         │
+┌────────▼────────┐       ┌────────▼────────┐       ┌────────▼────────┐
+│ Authentication  │       │  Groq Service   │       │ Database Service│
+│     Auth0       │       │ (Tool Calling)  │       │    Supabase     │
+└─────────────────┘       └────────┬────────┘       └────────┬────────┘
+                                   │                         │
+                     ┌─────────────┴─────────────┐           │
+                     │    Local Python Tools     │           │
+                     │ • pc_builder              │           │
+                     │ • fps_estimator           │           │
+                     └───────────────────────────┘           │
+                                                             │
+                                             ┌───────────────▼──────────────┐
+                                             │          PostgreSQL          │
+                                             │                              │
+                                             │ • Users                      │
+                                             │ • Chat Sessions              │
+                                             │ • Messages                   │
+                                             └──────────────────────────────┘
 
 ```
 
@@ -86,9 +81,7 @@ The application is built using a modern decoupled stack: **FastAPI** on the back
 
 # 📂 Project Structure
 
-
-```
-
+```text
 PC-Game-Consultant/
 │
 ├── app/
@@ -230,7 +223,7 @@ git push origin main
 
 # 🔑 Authentication Flow
 
-```
+```text
 User ──► Auth0 Client Login ──► JWT Issued ──► FastAPI Router Bearer Verification ──► Supabase Table Sync
 
 ```
@@ -276,7 +269,7 @@ POST /api/chat
 
 **Asad Ali**
 
-* **GitHub:** [Asad11-byte](https://www.google.com/search?q=https://github.com/Asad11-byte)
+* **GitHub:** [Asad11-byte](https://github.com/Asad11-byte)
 * **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com/in/your-linkedin)
 
 ---
