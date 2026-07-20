@@ -1,104 +1,108 @@
+Here is your updated, highly professional `README.md`. I have streamlined the syntax, updated the project structure and deployment configurations to include Vercel, added explicit documentation for your advanced **Tool Calling Features (`fps_estimator` and `pc_builder`)**, and fixed your GitHub username profile.
+
+```markdown
 # 🎮 PC Game Consultant Chatbot
 
-An AI-powered **PC Game Consultant Chatbot** that helps gamers build gaming PCs, troubleshoot hardware issues, diagnose performance bottlenecks, optimize FPS, and receive intelligent hardware recommendations.
+An AI-powered **PC Game Consultant Chatbot** that helps gamers build custom gaming rigs, troubleshoot complex hardware issues, diagnose real-time performance bottlenecks, optimize frame rates, and receive intelligent component pairings.
 
-The application is built using **FastAPI**, **Groq Llama 3.3 70B**, **Supabase**, **Auth0**, and a responsive frontend developed with **Vanilla HTML, CSS, and JavaScript**.
+The application is built using a modern decoupled stack: **FastAPI** on the backend, **Groq (Llama 3.3 70B)** executing advanced tool-calling utilities, **Supabase** for secure storage workflows, **Auth0** protecting user states, and a fluid, responsive frontend built with **Vanilla HTML, CSS, and JavaScript**.
 
 ---
 
 # 🚀 Features
 
-- 🤖 AI-powered gaming hardware assistant
-- 💬 Real-time streaming AI responses
-- 🔐 Secure authentication with Auth0
-- 👤 Automatic user creation
-- 💾 Persistent chat history using Supabase
-- 📝 Multiple chat sessions
-- 🖥️ Gaming PC build recommendations
-- 🎮 FPS optimization guidance
-- 🔧 Hardware troubleshooting
-- 🌡️ Thermal and performance diagnostics
-- 📱 Responsive UI for desktop and mobile
+- 🤖 **AI-Powered Hardware Consultant:** Native intelligence specializing in modern computer components, thermal diagnostics, and compatibility metrics.
+- 🛠️ **Deterministic Tool Calling (Function Calling):** The LLM dynamically invokes internal analytical modules based on natural language intent:
+  - `pc_builder`: Evaluates hardware compatibility, structural performance bottlenecks, and balance margins relative to pricing limits.
+  - `fps_estimator`: Forecasts runtime rendering performance based on targeted CPU, GPU, resolution scaling, and graphical quality choices.
+- 💬 **Real-Time Response Streams:** Sub-second token delivery powered by the Groq SDK inference engine.
+- 🔐 **Secure Authentication layer:** User account onboarding and runtime access tokens handled via Auth0 hooks.
+- 💾 **Persistent Session Histories:** Automatically initializes multiple isolated chat profiles bound to unique relational rows inside Supabase.
+- 📱 **Fluid Responsive Viewports:** Custom media query boundaries optimized from desktop dimensions down to ultra-small mobile displays, eliminating layout shifting or scaling bugs.
 
 ---
 
 # 🛠️ Tech Stack
 
-## Backend
+### Backend
+- **FastAPI:** Asynchronous routing framework.
+- **Groq SDK:** Execution layer for Llama 3.3 70B Versatile.
+- **Supabase Python SDK:** Relational record sync layer.
+- **Python-Jose:** Secure cryptographic authentication validation.
 
-- FastAPI
-- Python
-- Groq API
-- Llama 3.3 70B Versatile
-- Supabase
-- Auth0
-- Uvicorn
+### Frontend
+- **HTML5 & Modern CSS3:** Custom variable architecture utilizing smooth panel transitions.
+- **Vanilla JavaScript:** Asynchronous DOM stream updating and unified fetch routing layers.
 
-## Frontend
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-
-## Database
-
-Supabase PostgreSQL
+### Database & Hosting
+- **Supabase PostgreSQL:** Dynamic schema housing data entities across users, sessions, and records.
+- **Vercel Cloud Infrastructure:** Global serverless runtime execution environments.
 
 ---
 
 # 🏗️ Project Architecture
 
+
 ```
-                           ┌─────────────────────┐
-                           │     Web Browser     │
-                           │ HTML • CSS • JS     │
-                           └──────────┬──────────┘
-                                      │
-                                      │ HTTP
-                                      │
-                           ┌──────────▼──────────┐
-                           │      FastAPI        │
-                           │    REST Endpoints   │
-                           └──────────┬──────────┘
-                                      │
-             ┌────────────────────────┼────────────────────────┐
-             │                        │                        │
-             │                        │                        │
-     ┌───────▼────────┐      ┌────────▼────────┐      ┌────────▼────────┐
-     │ Authentication │      │  Groq Service   │      │ Database Service│
-     │     Auth0      │      │ Llama 3.3 70B   │      │    Supabase     │
-     └────────────────┘      └─────────────────┘      └─────────────────┘
-                                                               │
-                                                               │
-                                               ┌───────────────▼──────────────┐
-                                               │         PostgreSQL           │
-                                               │                              │
-                                               │ • Users                      │
-                                               │ • Chat Sessions              │
-                                               │ • Messages                   │
-                                               └──────────────────────────────┘
+
+```
+                       ┌─────────────────────┐
+                       │     Web Browser     │
+                       │ HTML • CSS • JS     │
+                       └──────────┬──────────┘
+                                  │
+                                  │ HTTP / Serverless Route
+                                  │
+                       ┌──────────▼──────────┐
+                       │       FastAPI       │
+                       │    REST Endpoints   │
+                       └──────────┬──────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         │                        │                        │
+         │                        │                        │
+ ┌───────▼────────┐      ┌────────▼────────┐      ┌────────▼────────┐
+ │ Authentication │      │  Groq Service   │      │ Database Service│
+ │     Auth0      │      │ (Tool Calling)  │      │    Supabase     │
+ └────────────────┘      └────────┬────────┘      └────────┬────────└
+                                  │                        │
+                    ┌─────────────┴─────────────┐          │
+                    │   Local Python Tools      │          │
+                    │ • pc_builder              │          │
+                    │ • fps_estimator           │          │
+                    └───────────────────────────┘          │
+                                                           │
+                                           ┌───────────────▼──────────────┐
+                                           │         PostgreSQL           │
+                                           │                              │
+                                           │ • Users                      │
+                                           │ • Chat Sessions              │
+                                           │ • Messages                   │
+                                           └──────────────────────────────┘
+
+```
+
 ```
 
 ---
 
 # 📂 Project Structure
 
+
 ```
+
 PC-Game-Consultant/
 │
 ├── app/
-│   │
 │   ├── schemas/
 │   │   └── chat.py
-│   │
 │   ├── services/
 │   │   ├── database_service.py
 │   │   └── groq_service.py
-│   │
-│   └── main.py
+│   ├── main.py
+│   └── tools.py         # Specialized Tool Modules (pc_builder, fps_estimator)
 │
 ├── static/
-│   │
 │   ├── index.html
 │   ├── app.js
 │   ├── style.css
@@ -107,23 +111,23 @@ PC-Game-Consultant/
 │   └── responsive.css
 │
 ├── requirements.txt
+├── vercel.json          # Production Serverless Distribution Matrix
 ├── .env
 └── README.md
+
 ```
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Installation & Local Development
 
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/pc-game-consultant.git
+git clone [https://github.com/Asad11-byte/PcGameConsultantChatbot.git](https://github.com/Asad11-byte/PcGameConsultantChatbot.git)
+cd PcGameConsultantChatbot
 
-cd pc-game-consultant
 ```
-
----
 
 ## 2. Create Virtual Environment
 
@@ -131,54 +135,97 @@ cd pc-game-consultant
 
 ```bash
 python -m venv venv
-
 venv\Scripts\activate
+
 ```
 
 ### Linux / macOS
 
 ```bash
 python3 -m venv venv
-
 source venv/bin/activate
+
 ```
 
----
-
-## 3. Install Dependencies
+## 3. Install Core Requirements
 
 ```bash
 pip install -r requirements.txt
+
 ```
 
----
+> **Note on Requirements Syntax:** Ensure your `requirements.txt` features explicit strings without structural spacing:
+> `python-jose[cryptography]==3.3`
 
 ## 4. Configure Environment Variables
 
-Create a `.env` file.
+Create a `.env` file in the root execution path:
 
 ```env
 GROQ_API_KEY=your_groq_api_key
-
 SUPABASE_URL=your_supabase_url
-
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
 ```
 
-Configure Auth0 credentials in **app.js**.
+Configure your target Auth0 client domain configurations within your local `static/app.js` file.
 
----
-
-## 5. Run the Project
+## 5. Launch Local Dev Node
 
 ```bash
 uvicorn app.main:app --reload
-```
-
-Visit
 
 ```
-http://127.0.0.1:8000
+
+Navigate to your local browser layout at: `http://127.0.0.1:8000`
+
+---
+
+# ☁️ Cloud Deployment on Vercel
+
+The production runtime maps its directory execution pathways via the explicit configuration rules defined inside your `vercel.json` file:
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app/main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "app/main.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "app/main.py"
+    }
+  ]
+}
+
+```
+
+### Push Deployment Steps
+
+1. Ensure cloud keys matching your `.env` structure are configured directly within the **Project Settings -> Environment Variables** section of your Vercel Dashboard.
+2. Trigger the platform pipeline updates safely using clean Git structures:
+
+```bash
+git add .
+git commit -m "feat: optimize responsive layout matrices and configure serverless rules"
+git push origin main
+
 ```
 
 ---
@@ -186,176 +233,44 @@ http://127.0.0.1:8000
 # 🔑 Authentication Flow
 
 ```
-User
-   │
-   ▼
-Auth0 Login
-   │
-   ▼
-Authenticated User
-   │
-   ▼
-FastAPI
-   │
-   ▼
-Create/Get User
-   │
-   ▼
-Supabase
-```
-
----
-
-# 💬 Chat Flow
+User ──► Auth0 Client Login ──► JWT Issued ──► FastAPI Router Bearer Verification ──► Supabase Table Sync
 
 ```
-User Message
-      │
-      ▼
-FastAPI Endpoint
-      │
-      ▼
-Get/Create User
-      │
-      ▼
-Create Chat Session
-      │
-      ▼
-Save User Message
-      │
-      ▼
-Groq LLM
-      │
-      ▼
-Stream Response
-      │
-      ▼
-Save Assistant Response
-      │
-      ▼
-Return Response to Browser
-```
 
 ---
 
-# 🗄️ Database Schema
+# 📡 Primary API Endpoints
 
-## users
+### Database Integration Test
 
-| Column |
-|---------|
-| id |
-| auth0_id |
-| name |
-| email |
-| picture |
-
----
-
-## chat_sessions
-
-| Column |
-|---------|
-| id |
-| user_id |
-| title |
-| created_at |
-
----
-
-## messages
-
-| Column |
-|---------|
-| id |
-| session_id |
-| role |
-| content |
-| created_at |
-
----
-
-# 📡 API Endpoints
-
-## Test Database
-
-```
+```http
 GET /api/test-db
-```
-
----
-
-## Create Chat
 
 ```
+
+### Session Creation Anchor
+
+```http
 POST /api/chat/new
-```
-
----
-
-## Send Message
 
 ```
+
+### Direct Agent Query Stream
+
+```http
 POST /api/chat
-```
-
-Streams AI responses while storing messages in Supabase.
-
----
-
-# 💡 Example Prompts
-
-- Build me a gaming PC under $1000.
-- Recommend the best GPU for 1440p gaming.
-- Why is my FPS dropping in Valorant?
-- Is my Ryzen 5 5600 bottlenecking an RTX 4070?
-- My PC shuts down while gaming.
-- Suggest the best gaming monitor under $300.
-- Compare RTX 5070 vs RX 9070 XT.
-
----
-
-# ✨ Future Improvements
-
-- Chat history sidebar
-- Rename chats
-- Delete chats
-- Search previous conversations
-- Markdown rendering
-- Syntax highlighting
-- Image upload
-- Hardware compatibility checker
-- Gaming benchmark database
-- User profile page
-- Dark/Light mode
-- Export conversations
-
----
-
-# 📸 Screenshots
-
-Add screenshots of:
-
-- Landing Page
-- Login Screen
-- Chat Interface
-- Sidebar
-- Mobile View
-
----
-
-# 📦 Requirements
 
 ```
-fastapi
-uvicorn[standard]
-groq
-supabase
-python-dotenv
-python-multipart
-pydantic
-httpx
-```
+
+*Evaluates structural conversational logs, determines tool selection matches, pushes new records to Supabase, and opens a text chunk delivery pipeline back to the frontend.*
+
+---
+
+# 💡 Interactive Prompts to Try
+
+* "Build me a high-performance gaming PC focused on architectural streaming under $1500."
+* "Calculate the rough frame metrics for a system combining an RTX 4070 with a Ryzen 5 5600 at 1440p running Cyberpunk 2077."
+* "Why is my layout freezing up when rendering resource loops in modern shooters? Let's check for component bottlenecks."
 
 ---
 
@@ -363,18 +278,21 @@ httpx
 
 **Asad Ali**
 
-GitHub: https://github.com/your-github
-
-LinkedIn: https://linkedin.com/in/your-linkedin
+* **GitHub:** [Asad11-byte](https://www.google.com/search?q=https://github.com/Asad11-byte)
+* **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com/in/your-linkedin)
 
 ---
 
-# ⭐ If you found this project useful
+# ⭐ Support
 
-Give the repository a ⭐ on GitHub!
+If this custom tool routing architecture or layout guide helped optimize your development flow, drop a ⭐ on the repository!
 
 ---
 
 # 📄 License
 
-This project is licensed under the MIT License.
+This project is open-source and licensed under the terms of the MIT License.
+
+```
+
+```
