@@ -333,7 +333,7 @@ body {
 }
 
 /* ==========================================================================
-   8. RESPONSIVE BREAKPOINTS
+   8. RESPONSIVE BREAKPOINTS (Fixed Mobile Zoom Issues)
    ========================================================================== */
 
 /* Tablet & Mobile Screens */
@@ -358,15 +358,27 @@ body {
     }
 
     .message {
+        width: auto; /* Fixes padding extension blowout */
         max-width: 100%;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding: 12px 20px;
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+        padding: 12px 16px;
+    }
+    
+    .message.user {
+        margin-left: auto !important; /* Keeps user bubble aligned right on mobile */
+        max-width: 85%;
+    }
+
+    .message.assistant {
+        margin-right: auto !important;
+        padding-left: 0;
     }
 
     .input-area {
         width: calc(100% - 32px);
         margin: 0 16px 16px 16px;
+        box-sizing: border-box;
     }
 }
 

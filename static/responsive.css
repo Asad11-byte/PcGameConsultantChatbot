@@ -79,15 +79,19 @@
     .landing-auth {
         width: 100%;
         justify-content: center;
+        display: flex; /* Ensures flex rules apply cleanly */
     }
 
     .landing-login-btn,
     .landing-signup-btn {
-        width: 140px;
+        flex: 1;          /* 1. Allows buttons to grow equally together */
+        max-width: 140px; /* 2. Caps them so they don't look giant on slightly larger screens */
+        text-align: center;
     }
 
     .landing-content {
         padding: 20px 16px;
+        box-sizing: border-box; /* 3. Protects padding from breaking widths */
     }
 
     .landing-content h1 {
@@ -98,7 +102,6 @@
         font-size: 15px;
     }
 }
-
 /* --------------------------------------------------------------------------
    5. Ultra-Small Phones (≤ 380px)
    -------------------------------------------------------------------------- */

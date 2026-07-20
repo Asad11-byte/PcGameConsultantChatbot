@@ -72,6 +72,8 @@
     justify-content: space-between;
     gap: 10px;
     width: 100%;
+    min-width: 0; /* 1. Crucial: Forces flex items to honor text truncation rules */
+    box-sizing: border-box; /* 2. Keeps padding accounted for inside the 100% width calculation */
     min-height: 44px;
     padding: 8px 12px;
     border-radius: 10px;
