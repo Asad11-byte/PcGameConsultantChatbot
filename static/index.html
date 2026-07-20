@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ai gaming Assistant</title>
+    <title>AI Gaming Assistant</title>
 
     <link rel="stylesheet" href="/static/Style.css">
     <link rel="stylesheet" href="/static/sidebar.css">
@@ -15,286 +15,132 @@
 <body>
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    <!-- =========================
-     Landing Screen
-========================= -->
-
+    <!-- ==========================================================================
+       1. Landing Screen
+       ========================================================================== -->
     <div id="landingScreen">
 
         <!-- Landing Navigation -->
         <nav class="landing-navbar">
-
             <div class="landing-brand">
-
                 <span class="landing-logo-icon">🎮</span>
-
-                <span class="landing-brand-text">
-                    Ai Gaming Assistant
-                </span>
-
+                <span class="landing-brand-text">AI Gaming Assistant</span>
             </div>
 
             <div class="landing-auth">
-
-                <button id="landingLoginBtn" class="landing-login-btn">
-                    Log In
-                </button>
-
-                <button id="landingSignupBtn" class="landing-signup-btn">
-                    Sign Up
-                </button>
-
+                <button id="landingLoginBtn" class="landing-login-btn">Log In</button>
+                <button id="landingSignupBtn" class="landing-signup-btn">Sign Up</button>
             </div>
-
         </nav>
 
+        <!-- Landing Content -->
         <section id="landingPage" class="landing-page">
-
             <div class="landing-content">
+                <div class="landing-logo">🎮</div>
 
-                <div class="landing-logo">
-                    🎮
-                </div>
-
-                <h1>
-                    Ai Gaming Assistant
-                </h1>
+                <h1>AI Gaming Assistant</h1>
 
                 <p class="landing-subtitle">
                     Your AI-powered gaming companion for building custom PCs,
                     diagnosing hardware issues, improving FPS,
-                    comparing components and helping you make smarter
-                    gaming decisions.
+                    comparing components, and helping you make smarter gaming decisions.
                 </p>
 
-                <!-- Features -->
-
+                <!-- Features Grid -->
                 <div class="feature-grid">
-
                     <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🖥️
-                        </div>
-
-                        <h3>
-                            Build Gaming PCs
-                        </h3>
-
-                        <p>
-                            Create balanced gaming PC builds for every budget.
-                        </p>
-
+                        <div class="feature-icon">🖥️</div>
+                        <h3>Build Gaming PCs</h3>
+                        <p>Create balanced gaming PC builds for every budget.</p>
                     </div>
 
                     <div class="feature-card">
-
-                        <div class="feature-icon">
-                            ⚡
-                        </div>
-
-                        <h3>
-                            FPS Optimization
-                        </h3>
-
-                        <p>
-                            Improve game performance and eliminate bottlenecks.
-                        </p>
-
+                        <div class="feature-icon">⚡</div>
+                        <h3>FPS Optimization</h3>
+                        <p>Improve game performance and eliminate bottlenecks.</p>
                     </div>
 
                     <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🔧
-                        </div>
-
-                        <h3>
-                            Hardware Diagnosis
-                        </h3>
-
-                        <p>
-                            Troubleshoot overheating, crashes and compatibility issues.
-                        </p>
-
+                        <div class="feature-icon">🔧</div>
+                        <h3>Hardware Diagnosis</h3>
+                        <p>Troubleshoot overheating, crashes, and compatibility issues.</p>
                     </div>
 
                     <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🎯
-                        </div>
-
-                        <h3>
-                            Component Recommendations
-                        </h3>
-
-                        <p>
-                            Compare CPUs, GPUs, RAM, SSDs and accessories.
-                        </p>
-
+                        <div class="feature-icon">🎯</div>
+                        <h3>Component Recommendations</h3>
+                        <p>Compare CPUs, GPUs, RAM, SSDs, and accessories.</p>
                     </div>
-
                 </div>
 
                 <!-- Example Prompts -->
-
                 <div class="example-prompts">
-
-                    <button class="prompt-card">
-                        💬 Build me a gaming PC under $1000
-                    </button>
-
-                    <button class="prompt-card">
-                        💬 Why is my FPS dropping in Valorant?
-                    </button>
-
-                    <button class="prompt-card">
-                        💬 Recommend the best GPU for 1440p gaming
-                    </button>
-
-                    <button class="prompt-card">
-                        💬 Is my CPU bottlenecking my RTX 4070?
-                    </button>
-
+                    <button class="prompt-card">💬 Build me a gaming PC under $1000</button>
+                    <button class="prompt-card">💬 Why is my FPS dropping in Valorant?</button>
+                    <button class="prompt-card">💬 Recommend the best GPU for 1440p gaming</button>
+                    <button class="prompt-card">💬 Is my CPU bottlenecking my RTX 4070?</button>
                 </div>
-
             </div>
-
-        </section><!-- Everything that belongs to the landing page goes here -->
-
+        </section>
     </div>
 
-    <!-- =========================
-     Chat Dashboard
-========================= -->
-
+    <!-- ==========================================================================
+       2. Chat Dashboard
+       ========================================================================== -->
     <div id="chatScreen" class="hidden">
-
         <div class="app-layout">
 
-            <!-- =========================
-         Sidebar
-    ========================== -->
+            <!-- Sidebar -->
             <aside class="sidebar">
-
                 <div class="sidebar-header">
-
                     <div class="sidebar-logo">
-
-                        🎮
-                        <span>Ai gaming Assistant</span>
-
+                        🎮 <span>AI Gaming Assistant</span>
                     </div>
-
-                    <button id="newChatBtn" class="new-chat-btn">
-
-                        + New Chat
-
-                    </button>
-
+                    <button id="newChatBtn" class="new-chat-btn">+ New Chat</button>
                 </div>
-
-
-
 
                 <!-- Conversation History -->
                 <div id="chatHistory" class="sidebar-content">
+                    <!-- Dynamic chat items with .chat-actions will be injected here via JS -->
+                </div>
+            </aside>
 
+            <!-- Main Chat Workspace -->
+            <main class="chat-container">
 
-                    <div class="chat-actions">
+                <!-- Header -->
+                <header class="chat-header">
+                    <button id="menuBtn" class="menu-btn">☰</button>
 
-                        <button class="chat-edit">
-                            ✏️
-                        </button>
+                    <span class="bot-title">AI Gaming Assistant</span>
 
-                        <button class="chat-delete">
-                            🗑
-                        </button>
-
+                    <div id="auth-widget" class="auth-flex">
+                        <p id="userName" class="user-greeting"></p>
+                        <button id="loginBtn" class="auth-btn">Log In</button>
+                        <button id="logoutBtn" class="auth-btn hidden">Log Out</button>
                     </div>
+                </header>
 
+                <!-- Chat Messages Stream -->
+                <section id="chatBox" class="chat-box hidden"></section>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input id="userInput" type="text" placeholder="Ask anything about gaming PCs & Games...">
+                        <button id="sendBtn">Send</button>
+                    </div>
                 </div>
 
-        </div>
+            </main>
 
-        </aside>
+        </div> <!-- End .app-layout -->
+    </div> <!-- End #chatScreen -->
 
-        <!-- =========================
-         Main Chat Area
-    ========================== -->
-
-        <main class="chat-container">
-
-            <!-- Header -->
-            <header class="chat-header">
-
-                <button id="menuBtn" class="menu-btn">
-                    ☰
-                </button>
-
-                <span class="bot-title">
-                    Ai gaming Assistant
-                </span>
-
-                <div id="auth-widget" class="auth-flex">
-
-                    <p id="userName" class="user-greeting"></p>
-
-                    <button id="loginBtn" class="auth-btn">
-                        Log In
-                    </button>
-
-                    <button id="logoutBtn" class="auth-btn hidden">
-                        Log Out
-                    </button>
-
-                </div>
-
-            </header>
-
-            <!-- =========================
-             Landing Screen
-        ========================== -->
-
-
-
-            <!-- =========================
-             Chat Messages
-        ========================== -->
-
-            <section id="chatBox" class="chat-box hidden">
-
-            </section>
-
-            <!-- =========================
-             Input Area
-        ========================== -->
-            <div class="input-area">
-                <div class="input-wrapper">
-
-                    <input id="userInput" type="text" placeholder="Ask anything about gaming PCs & Games...">
-
-                    <button id="sendBtn">
-                        Send
-                    </button>
-
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
-    <!-- Auth0 SDK -->
+    <!-- Scripts -->
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
-
-    <!-- App -->
-    <script src="/static/app.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
+    <script src="/static/app.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,99 @@
-
-// ================================
-// Auth0 Configuration
-// ================================
+// ============================================================================
+// 1. GLOBAL STATE & AUTH CONFIGURATION
+// ============================================================================
 
 let currentSessionId = null;
 let auth0Client = null;
+
+/**
+ * Retrieves the current Auth0 Access Token for API requests.
+ */
+async function getAccessToken() {
+    if (!auth0Client) return null;
+    try {
+        return await auth0Client.getTokenSilently();
+    } catch (err) {
+        console.error("Failed to get access token:", err);
+        return null;
+    }
+}
+
+// ============================================================================
+// 2. UI HELPERS & MOBILE SIDEBAR NAVIGATION
+// ============================================================================
+
+const scrollToBottom = () => {
+    const chatBox = document.getElementById("chatBox");
+    if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+};
+
+function appendMessage(text, sender) {
+    const chatBox = document.getElementById("chatBox");
+    const div = document.createElement("div");
+
+    div.className = `message ${sender}`;
+
+    if (sender === "assistant") {
+        div.innerHTML = typeof marked !== "undefined" ? marked.parse(text) : text;
+    } else {
+        div.textContent = text;
+    }
+
+    chatBox.appendChild(div);
+    scrollToBottom();
+
+    return div;
+}
+
+function closeSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+
+    if (sidebar) sidebar.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+}
+
+function setupMobileSidebar() {
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.querySelector(".sidebar");
+
+    if (!menuBtn || !sidebar) return;
+
+    // Create overlay once if missing
+    let overlay = document.querySelector(".sidebar-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.className = "sidebar-overlay";
+        document.body.appendChild(overlay);
+    }
+
+    // Toggle sidebar
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+    });
+
+    // Close on overlay click
+    overlay.addEventListener("click", closeSidebar);
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeSidebar();
+    });
+
+    // Auto-close on mobile when clicking a chat item
+    document.addEventListener("click", (e) => {
+        if (window.innerWidth <= 768 && e.target.closest(".chat-item")) {
+            closeSidebar();
+        }
+    });
+}
+
+// ============================================================================
+// 3. AUTH0 INITIALIZATION & UI STATE MANAGEMENT
+// ============================================================================
 
 async function initAuth() {
     try {
@@ -20,13 +109,12 @@ async function initAuth() {
 
         console.log("✅ Auth0 initialized");
 
-        // Handle Auth0 redirect
+        // Handle Auth0 redirect after login
         if (
             window.location.search.includes("code=") &&
             window.location.search.includes("state=")
         ) {
             await auth0Client.handleRedirectCallback();
-
             window.history.replaceState(
                 {},
                 document.title,
@@ -34,22 +122,14 @@ async function initAuth() {
             );
         }
 
-        updateUI();
+        await updateUI();
 
     } catch (err) {
         console.error("❌ Auth0 Initialization Error:", err);
     }
 }
-const scrollToBottom = () => {
-    const chatBox = document.getElementById("chatBox");
-    chatBox.scrollTop = chatBox.scrollHeight;
-};
 
-// Example Trigger Usage: Call this right after adding any message element to the DOM
-// appendUserMessage();
-// scrollToBottom();
 async function updateUI() {
-
     if (!auth0Client) return;
 
     const loginBtn = document.getElementById("loginBtn");
@@ -59,618 +139,331 @@ async function updateUI() {
     const authenticated = await auth0Client.isAuthenticated();
 
     if (authenticated) {
-
         const user = await auth0Client.getUser();
 
         loadChatHistory();
-        userName.textContent = `👤 ${user.name}`;
+        if (userName) userName.textContent = `👤 ${user.name}`;
 
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "block";
-        // Switch from landing page to chat dashboard
-        document.getElementById("landingScreen").classList.add("hidden");
-        document.getElementById("chatScreen").classList.remove("hidden");
+        if (loginBtn) loginBtn.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "block";
 
-        // Show chat messages area
-        document.getElementById("chatBox").classList.remove("hidden");
+        // View switching
+        document.getElementById("landingScreen")?.classList.add("hidden");
+        document.getElementById("chatScreen")?.classList.remove("hidden");
+        document.getElementById("chatBox")?.classList.remove("hidden");
 
+        // Check for pending prompts stored prior to authentication
         const pendingPrompt = localStorage.getItem("pendingPrompt");
-
         if (pendingPrompt) {
-
-            document.getElementById("userInput").value = pendingPrompt;
-
+            const userInput = document.getElementById("userInput");
+            if (userInput) userInput.value = pendingPrompt;
             localStorage.removeItem("pendingPrompt");
-
             sendMessage();
-
         }
 
     } else {
+        if (userName) userName.textContent = "";
+        if (loginBtn) loginBtn.style.display = "block";
+        if (logoutBtn) logoutBtn.style.display = "none";
 
-        userName.textContent = "";
-
-        loginBtn.style.display = "block";
-        logoutBtn.style.display = "none";
-        // Show landing page
-        document.getElementById("landingScreen").classList.remove("hidden");
-        document.getElementById("chatScreen").classList.add("hidden");
-
+        document.getElementById("landingScreen")?.classList.remove("hidden");
+        document.getElementById("chatScreen")?.classList.add("hidden");
     }
-
 }
-// ================================
-// Login Button
-// ================================
 
-document.getElementById("loginBtn").addEventListener("click", async () => {
-
-    if (!auth0Client) return;
-
-    await auth0Client.loginWithRedirect();
-
-});
-document.getElementById("landingLoginBtn").addEventListener("click", async () => {
-
-    if (!auth0Client) return;
-
-    await auth0Client.loginWithRedirect();
-
-});
-// ================================
-// Landing Page Signup Button
-// ================================
-
-document.getElementById("landingSignupBtn").addEventListener("click", async () => {
-
-    if (!auth0Client) return;
-
-    await auth0Client.loginWithRedirect({
-
-        authorizationParams: {
-
-            screen_hint: "signup"
-
-        }
-
-    });
-
-});
-
-// ================================
-// Logout Button
-// ================================
-
-document.getElementById("logoutBtn").addEventListener("click", () => {
-
-    if (!auth0Client) return;
-
-    auth0Client.logout({
-
-        logoutParams: {
-
-            returnTo: window.location.origin
-
-        }
-
-    });
-
-});
-
-// ================================
-// Send Chat Message 
-// ================================
+// ============================================================================
+// 4. CHAT API LOGIC & OPERATIONS
+// ============================================================================
 
 async function sendMessage() {
-
     const input = document.getElementById("userInput");
-    const text = input.value.trim();
+    const text = input ? input.value.trim() : "";
 
     if (!text) return;
 
-
     appendMessage(text, "user");
-    input.value = "";
+    if (input) input.value = "";
 
     const assistant = appendMessage("", "assistant");
 
-    // User must be logged in
     if (!auth0Client || !(await auth0Client.isAuthenticated())) {
         assistant.textContent = "❌ Please log in first.";
         return;
     }
 
-    // Get logged-in Auth0 user
     const user = await auth0Client.getUser();
 
-    console.log("User:", user);
-
     try {
-
         const response = await fetch("/api/chat", {
-
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
-
                 message: text,
-
                 user: user,
-
                 session_id: currentSessionId
-
             })
-
         });
-        // ================================
-        // Load Existing Chat
-        // ================================
 
-        
+        // Close mobile drawer on submission
         if (window.innerWidth <= 768) {
-
-            document
-                .querySelector(".sidebar")
-                .classList.remove("active");
-
+            closeSidebar();
         }
-        const sessionId = response.headers.get(
-            "X-Session-Id"
-        );
 
+        const sessionId = response.headers.get("X-Session-Id");
         if (sessionId) {
-
             currentSessionId = sessionId;
-
-            console.log(
-                "Current Session:",
-                currentSessionId
-            );
             loadChatHistory();
-
         }
 
         if (!response.ok) {
-
             const error = await response.text();
-
             throw new Error(error);
-
         }
 
-       const reader = response.body.getReader();
+        // Stream reader setup
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullResponse = "";
 
-const decoder = new TextDecoder();
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-let fullResponse = "";
-
-while (true) {
-
-    const { done, value } = await reader.read();
-
-    if (done) break;
-
-    fullResponse += decoder.decode(value, { stream: true });
-
-    assistant.innerHTML = marked.parse(fullResponse);
-
-    document.getElementById("chatBox").scrollTop =
-        document.getElementById("chatBox").scrollHeight;
-
-}
-
-} catch (err) {
-
-    console.error(err);
-
-    assistant.innerHTML = `
-        <strong>❌ Error:</strong> ${err.message}
-    `;
-
-}
-async function loadChatHistory() {
-
-    if (!auth0Client) return;
-
-
-    const user = await auth0Client.getUser();
-
-
-    const response = await fetch(
-        "/api/chat/history",
-        {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                message: "history",
-
-                user: user
-
-            })
-
+            fullResponse += decoder.decode(value, { stream: true });
+            assistant.innerHTML = typeof marked !== "undefined" ? marked.parse(fullResponse) : fullResponse;
+            scrollToBottom();
         }
-    );
 
-
-    const data = await response.json();
-
-
-    const history =
-        document.getElementById("chatHistory");
-
-
-    history.innerHTML = "";
-
-
-    data.chats.forEach(chat => {
-
-
-        const div =
-            document.createElement("div");
-
-
-        div.className = "chat-item";
-
-
-        div.textContent =
-            chat.title;
-
-
-        div.onclick = () => {
-
-            openChat(chat.id);
-
-        };
-
-
-        history.appendChild(div);
-
-
-    });
-
+    } catch (err) {
+        console.error("Send Message Error:", err);
+        assistant.innerHTML = `<strong>❌ Error:</strong> ${err.message}`;
+    }
 }
+
 async function openChat(sessionId) {
+    currentSessionId = sessionId;
 
-            currentSessionId = sessionId;
+    try {
+        const response = await fetch(`/api/chat/${sessionId}`);
+        const data = await response.json();
 
+        const chatBox = document.getElementById("chatBox");
+        if (chatBox) chatBox.innerHTML = "";
 
-            const response = await fetch(
-                `/api/chat/${sessionId}`
-            );
-
-
-            const data = await response.json();
-
-
-            const chatBox = document.getElementById("chatBox");
-
-
-            chatBox.innerHTML = "";
-
-
+        if (data.messages && Array.isArray(data.messages)) {
             data.messages.forEach(msg => {
-
                 appendMessage(
                     msg.content,
-                    msg.role === "user"
-                        ? "user"
-                        : "assistant"
+                    msg.role === "user" ? "user" : "assistant"
                 );
-
             });
-
         }
-
-
-// ================================
-// Chat Events
-// ================================
-
-document.getElementById("sendBtn").addEventListener("click", sendMessage);
-
-document.getElementById("userInput").addEventListener("keypress", e => {
-    if (e.key === "Enter") {
-        sendMessage();
+    } catch (err) {
+        console.error("Open Chat Error:", err);
     }
-});
-
-
-
-
-// ================================
-// Append Message
-// ================================
-
-function appendMessage(text, sender) {
-
-    const chatBox = document.getElementById("chatBox");
-
-    const div = document.createElement("div");
-
-    div.className = `message ${sender}`;
-
-    if (sender === "assistant") {
-
-        div.innerHTML = marked.parse(text);
-
-    } else {
-
-        div.textContent = text;
-
-    }
-
-    chatBox.appendChild(div);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    return div;
-
 }
 
 async function loadChatHistory() {
-
     if (!auth0Client) return;
-
 
     const user = await auth0Client.getUser();
 
-
-    const response = await fetch(
-        "/api/chat/history",
-        {
-
+    try {
+        const response = await fetch("/api/chat/history", {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
-
                 message: "history",
-
                 user: user
-
             })
-
-        }
-    );
-
-
-    const data = await response.json();
-
-
-    const history =
-        document.getElementById("chatHistory");
-
-
-    history.innerHTML = "";
-
-
-    data.chats.forEach(chat => {
-
-    const div = document.createElement("div");
-
-    div.className = "chat-item";
-
-    div.innerHTML = `
-        <span class="chat-title">${chat.title}</span>
-
-        <div class="chat-actions">
-
-            <button class="chat-edit" title="Rename">
-                ✏️
-            </button>
-
-            <button class="chat-delete" title="Delete">
-                🗑️
-            </button>
-
-        </div>
-    `;
-
-    // Open chat
-    div.querySelector(".chat-title").onclick = () => {
-
-        openChat(chat.id);
-
-    };
-
-    // Rename
-    div.querySelector(".chat-edit").onclick = (e) => {
-
-        e.stopPropagation();
-
-        renameChat(chat.id, chat.title);
-
-    };
-
-    // Delete
-    div.querySelector(".chat-delete").onclick = (e) => {
-
-        e.stopPropagation();
-
-        deleteChat(chat.id);
-
-    };
-
-    history.appendChild(div);
-
-});
-
-}
-
-// ================================
-// Start Application
-// ================================
-
-window.addEventListener("load", () => {
-
-    console.log("Application Started");
-
-    console.log("Auth0 SDK:", typeof createAuth0Client);
-
-    // Authorization parameters for Auth0 initialization
-    initAuth({
-        authorizationParams: {
-            redirect_uri: window.location.origin,
-            audience: "https://pc-game-consultant-api"
-        }
-    });
-
-    document.querySelectorAll(".prompt-card").forEach(card => {
-
-        card.addEventListener("click", async () => {
-
-            const prompt = card.textContent.trim();
-
-            if (await auth0Client.isAuthenticated()) {
-
-                document.getElementById("userInput").value = prompt;
-
-                sendMessage();
-
-            } else {
-
-                localStorage.setItem("pendingPrompt", prompt);
-
-                await auth0Client.loginWithRedirect();
-
-            }
-
         });
 
-    });
+        const data = await response.json();
+        const historyContainer = document.getElementById("chatHistory");
 
-document.getElementById("newChatBtn").addEventListener("click", () => {
+        if (!historyContainer) return;
+        historyContainer.innerHTML = "";
 
-    currentSessionId = null;
+        if (!data.chats || !Array.isArray(data.chats)) return;
 
-    document.getElementById("chatBox").innerHTML = "";
+        data.chats.forEach(chat => {
+            const div = document.createElement("div");
+            div.className = "chat-item";
 
-    document.getElementById("userInput").value = "";
+            div.innerHTML = `
+                <span class="chat-title">${chat.title}</span>
+                <div class="chat-actions">
+                    <button class="chat-edit" title="Rename">✏️</button>
+                    <button class="chat-delete" title="Delete">🗑️</button>
+                </div>
+            `;
 
-    document.getElementById("userInput").focus();
+            // Item action bindings
+            div.querySelector(".chat-title").onclick = () => openChat(chat.id);
 
-    // Close sidebar on mobile
-    if (window.innerWidth <= 768) {
+            div.querySelector(".chat-edit").onclick = (e) => {
+                e.stopPropagation();
+                renameChat(chat.id, chat.title);
+            };
 
-        document
-            .querySelector(".sidebar")
-            .classList.remove("active");
+            div.querySelector(".chat-delete").onclick = (e) => {
+                e.stopPropagation();
+                deleteChat(chat.id);
+            };
 
+            historyContainer.appendChild(div);
+        });
+
+    } catch (err) {
+        console.error("Load Chat History Error:", err);
     }
-
-});
-
-    // ======================================
-// Mobile Sidebar
-// ======================================
-
-const menuBtn = document.getElementById("menuBtn");
-const sidebar = document.querySelector(".sidebar");
-
-// Create overlay
-const overlay = document.createElement("div");
-overlay.className = "sidebar-overlay";
-document.body.appendChild(overlay);
-
-// Open / Close sidebar
-menuBtn.addEventListener("click", () => {
-
-    sidebar.classList.toggle("active");
-    overlay.classList.toggle("active");
-
-});
-
-// Close when clicking overlay
-overlay.addEventListener("click", closeSidebar);
-
-// Close with ESC
-document.addEventListener("keydown", (e) => {
-
-    if (e.key === "Escape") {
-        closeSidebar();
-    }
-
-});
-
-function closeSidebar() {
-
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-
 }
 
-// Automatically close after selecting a chat (mobile only)
-document.addEventListener("click", (e) => {
-
-    if (window.innerWidth <= 768 && e.target.closest(".chat-item")) {
-        closeSidebar();
-    }
-
-});
-// ======================================
-// Rename Chat
-// ======================================
-
-async function renameChat(chatId, currentTitle) {
-
-    const newTitle = prompt(
-        "Rename conversation:",
-        currentTitle
-    );
-
-    if (
-        !newTitle ||
-        newTitle.trim() === "" ||
-        newTitle === currentTitle
-    ) {
+async function deleteChat(chatId) {
+    if (!confirm("Are you sure you want to delete this chat?")) {
         return;
     }
 
-    try {
+    const token = await getAccessToken();
 
-        const response = await fetch(
-            `/api/chat/${chatId}/rename`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({
-                    title: newTitle.trim()
-                })
+    try {
+        const response = await fetch(`/api/chat/${chatId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
             }
-        );
+        });
 
         if (!response.ok) {
+            throw new Error("Unable to delete chat.");
+        }
 
+        loadChatHistory();
+
+        // Clear chat screen if currently viewing deleted chat
+        if (currentSessionId === chatId) {
+            currentSessionId = null;
+            const chatBox = document.getElementById("chatBox");
+            if (chatBox) chatBox.innerHTML = "";
+        }
+
+    } catch (err) {
+        console.error("Delete Chat Error:", err);
+        alert(err.message);
+    }
+}
+
+async function renameChat(chatId, currentTitle) {
+    const newTitle = prompt("Rename conversation:", currentTitle);
+
+    if (!newTitle || newTitle.trim() === "" || newTitle === currentTitle) {
+        return;
+    }
+
+    const token = await getAccessToken();
+
+    try {
+        const response = await fetch(`/api/chat/${chatId}/rename`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                title: newTitle.trim()
+            })
+        });
+
+        if (!response.ok) {
             throw new Error("Unable to rename chat.");
-
         }
 
         loadChatHistory();
 
     } catch (err) {
-
-        console.error(err);
-
+        console.error("Rename Chat Error:", err);
         alert(err.message);
-
     }
-
 }
 
+// ============================================================================
+// 5. EVENT LISTENERS & APPLICATION INITIALIZATION
+// ============================================================================
 
+window.addEventListener("DOMContentLoaded", () => {
+    console.log("Application Loaded");
+
+    // Initialize Auth & UI
+    initAuth();
+    setupMobileSidebar();
+
+    // Authentication buttons
+    document.getElementById("loginBtn")?.addEventListener("click", async () => {
+        if (auth0Client) await auth0Client.loginWithRedirect();
+    });
+
+    document.getElementById("landingLoginBtn")?.addEventListener("click", async () => {
+        if (auth0Client) await auth0Client.loginWithRedirect();
+    });
+
+    document.getElementById("landingSignupBtn")?.addEventListener("click", async () => {
+        if (auth0Client) {
+            await auth0Client.loginWithRedirect({
+                authorizationParams: { screen_hint: "signup" }
+            });
+        }
+    });
+
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+        if (auth0Client) {
+            auth0Client.logout({
+                logoutParams: { returnTo: window.location.origin }
+            });
+        }
+    });
+
+    // Chat form submissions
+    document.getElementById("sendBtn")?.addEventListener("click", sendMessage);
+
+    document.getElementById("userInput")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // New Chat Action
+    document.getElementById("newChatBtn")?.addEventListener("click", () => {
+        currentSessionId = null;
+        const chatBox = document.getElementById("chatBox");
+        const userInput = document.getElementById("userInput");
+
+        if (chatBox) chatBox.innerHTML = "";
+        if (userInput) {
+            userInput.value = "";
+            userInput.focus();
+        }
+
+        closeSidebar();
+    });
+
+    // Prompt Card Click Handlers
+    document.querySelectorAll(".prompt-card").forEach(card => {
+        card.addEventListener("click", async () => {
+            const promptText = card.textContent.trim();
+
+            if (auth0Client && await auth0Client.isAuthenticated()) {
+                const userInput = document.getElementById("userInput");
+                if (userInput) userInput.value = promptText;
+                sendMessage();
+            } else if (auth0Client) {
+                localStorage.setItem("pendingPrompt", promptText);
+                await auth0Client.loginWithRedirect();
+            }
+        });
+    });
+});
