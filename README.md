@@ -6,6 +6,9 @@ An AI-powered **PC Game Consultant Chatbot** that helps gamers build custom gami
 The application is built using a modern decoupled stack: **FastAPI** on the backend, **Groq (Llama 3.3 70B)** executing advanced tool-calling utilities, **Supabase** for secure storage workflows, **Auth0** protecting user states, and a fluid, responsive frontend built with **Vanilla HTML, CSS, and JavaScript**.
 
 ---
+# Live Demo link
+
+- **Tap Here :** https://pc-game-consultant-chatbot.vercel.app
 
 # 🚀 Features
 
